@@ -7,7 +7,7 @@ export default function BoutiqueChatbot({ phone, onBook }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
 
-  const { themePalette, name } = useDemoTheme();
+  const { themePalette, clinicName } = useDemoTheme();
   const palettes = {
     'cream-sage': { bgCream: '#FDFBF7', textSage: '#2C4C3B', accentSand: '#E8E1D5', mutedText: '#6B705C' },
     'midnight-gold': { bgCream: '#0F172A', textSage: '#D4AF37', accentSand: '#1E293B', mutedText: '#94A3B8' },
@@ -34,7 +34,7 @@ export default function BoutiqueChatbot({ phone, onBook }) {
   }, [hasOpened]);
 
   // WhatsApp Pre-filled message
-  const waMessage = encodeURIComponent(`Hello, I'd like to enquire about booking a consultation at ${name}.`);
+  const waMessage = encodeURIComponent(`Hello, I'd like to enquire about booking a consultation at ${clinicName}.`);
   // Strip spaces from phone for WA link
   const waNumber = phone ? phone.replace(/\s+/g, '') : '';
 
@@ -101,7 +101,7 @@ export default function BoutiqueChatbot({ phone, onBook }) {
                 className="p-5 rounded-2xl rounded-tl-none shadow-[0_2px_10px_-4px_rgba(0,0,0,0.1)] border border-black/5 text-sm leading-relaxed"
                 style={{ backgroundColor: bgCream, color: textSage, fontFamily: 'var(--font-jakarta)' }}
               >
-                <p className="mb-3">Welcome to {name}. 👋</p>
+                <p className="mb-3">Welcome to {clinicName}. 👋</p>
                 <p>I'm here to help you get started. Would you like to schedule a private consultation, or would you prefer to speak directly with our team?</p>
               </motion.div>
             </div>
