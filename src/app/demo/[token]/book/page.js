@@ -11,6 +11,7 @@ import '@/app/demo/demo.css';
 export default function BookPage({ params }) {
   const { token } = use(params);
   const [config, setConfig] = useState(null);
+  const [isDeactivated, setIsDeactivated] = useState(false);
   
   const [treatment, setTreatment] = useState('Consultation');
   const [day, setDay] = useState('Today');
@@ -55,13 +56,37 @@ export default function BookPage({ params }) {
         template: config.template || 'dental',
         page: 'book',
       }),
-    }).catch(() => {}); // Fire-and-forget
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.deactivated) {
+          setIsDeactivated(true);
+        }
+      })
+      .catch(() => {});
   }, [config]);
 
   if (!config) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a', color: 'white', fontFamily: 'sans-serif' }}>
         <p style={{ letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.85rem' }}>Loading dynamic booking client...</p>
+      </div>
+    );
+  }
+
+  if (isDeactivated) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#05040a', color: 'white', fontFamily: 'sans-serif', padding: '20px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '480px', padding: '2.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem', filter: 'drop-shadow(0 0 12px rgba(223, 186, 115, 0.4))' }}>⏳</div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#f3f4f6', marginBottom: '1rem', letterSpacing: '-0.02em' }}>Konzeptseite abgelaufen</h2>
+          <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '2rem', fontWeight: 300 }}>
+            Der Vorschaulink für diese interaktive Design-Demo wurde vorübergehend deaktiviert oder ist abgelaufen.
+          </p>
+          <a href="mailto:hello@aurabix.com" style={{ display: 'inline-block', padding: '12px 30px', background: 'linear-gradient(135deg, #DFBA73 0%, #B45309 100%)', color: 'black', textDecoration: 'none', fontWeight: 700, borderRadius: '30px', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: '0 8px 20px rgba(223, 186, 115, 0.25)' }}>
+            AuraBix kontaktieren
+          </a>
+        </div>
       </div>
     );
   }

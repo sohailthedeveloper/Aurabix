@@ -9,12 +9,31 @@ import AuraBixPitch from '@/components/demo/AuraBixPitch';
 import Chatbot from '@/components/demo/Chatbot';
 import FloatingWhatsApp from '@/components/demo/FloatingWhatsApp';
 import BookingModal from '@/components/demo/BookingModal';
+import DentalTemplateV2 from '@/components/demo/DentalTemplateV2';
 import '@/app/demo/demo.css';
 
 export default function DemoPage({ params }) {
   const { token } = use(params);
   const [config, setConfig] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isDeactivated, setIsDeactivated] = useState(false);
+
+  const openBookingModal = () => {
+    setIsBookingOpen(true);
+    if (config) {
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: config.token,
+          name: config.name,
+          template: config.layout || 'dental',
+          page: 'demo',
+          action: 'Opened Booking Modal'
+        })
+      }).catch(() => {});
+    }
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -57,7 +76,14 @@ export default function DemoPage({ params }) {
         template: config.template || 'dental',
         page: 'demo',
       }),
-    }).catch(() => {}); // Fire-and-forget, never block the UI
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.deactivated) {
+          setIsDeactivated(true);
+        }
+      })
+      .catch(() => {});
   }, [config]);
 
   // Scroll Reveal Animations
@@ -92,6 +118,23 @@ export default function DemoPage({ params }) {
     );
   }
 
+  if (isDeactivated) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#05040a', color: 'white', fontFamily: 'sans-serif', padding: '20px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '480px', padding: '2.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem', filter: 'drop-shadow(0 0 12px rgba(223, 186, 115, 0.4))' }}>⏳</div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#f3f4f6', marginBottom: '1rem', letterSpacing: '-0.02em' }}>Konzeptseite abgelaufen</h2>
+          <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '2rem', fontWeight: 300 }}>
+            Der Vorschaulink für diese interaktive Design-Demo wurde vorübergehend deaktiviert oder ist abgelaufen.
+          </p>
+          <a href="mailto:hello@aurabix.com" style={{ display: 'inline-block', padding: '12px 30px', background: 'linear-gradient(135deg, #DFBA73 0%, #B45309 100%)', color: 'black', textDecoration: 'none', fontWeight: 700, borderRadius: '30px', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: '0 8px 20px rgba(223, 186, 115, 0.25)' }}>
+            AuraBix kontaktieren
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   const { name, bg, layout, template } = config;
 
   // Background Options
@@ -112,11 +155,21 @@ export default function DemoPage({ params }) {
   const heroImg = bgMap[bg] ?? null;
   const heroLayout = layoutStyles[layout] ?? layoutStyles['1'];
 
+  // ── Render Premium V2 Template ──
+  if (template === 'dental-v2') {
+    return (
+      <DemoThemeProvider config={config}>
+        <DentalTemplateV2 config={config} />
+      </DemoThemeProvider>
+    );
+  }
+
+  // ── Render Standard Legacy Template ──
   return (
     <DemoThemeProvider config={config}>
       <div className="demo-page-root">
         {/* Niche Preview Notice Banner */}
-        {template && template !== 'dental' && (
+        {template && template !== 'dental' && template !== 'dental-v2' && (
           <div style={{
             backgroundColor: '#0f172a',
             color: '#cbd5e1',
@@ -146,7 +199,7 @@ export default function DemoPage({ params }) {
         )}
 
         {/* Navigation */}
-        <Navbar onBookClick={() => setIsBookingOpen(true)} />
+        <Navbar onBookClick={openBookingModal} />
 
         {/* Hero Section */}
         <section className="hero" id="home">
@@ -168,7 +221,7 @@ export default function DemoPage({ params }) {
                 {name} offers a wide range of dental treatments at competitive prices. We work closely with each patient to offer an exceptionally caring, professional and personal dental service.
               </p>
               <div className="hero-actions" style={layout === '2' ? { justifyContent: 'center' } : {}}>
-                <button onClick={() => setIsBookingOpen(true)} className="primary-btn" style={{ border: 'none', cursor: 'pointer' }}>
+                <button onClick={openBookingModal} className="primary-btn" style={{ border: 'none', cursor: 'pointer' }}>
                   BOOK ONLINE
                 </button>
                 <a href="#services" className="secondary-btn">VIEW TREATMENTS</a>
@@ -325,7 +378,7 @@ export default function DemoPage({ params }) {
         <AuraBixPitch />
 
         {/* Footer */}
-        <Footer onBookClick={() => setIsBookingOpen(true)} />
+        <Footer onBookClick={openBookingModal} />
 
         {/* Dynamic Widgets */}
         <Chatbot />

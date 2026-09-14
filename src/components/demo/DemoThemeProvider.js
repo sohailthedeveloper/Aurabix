@@ -11,6 +11,7 @@ const DemoThemeContext = createContext({
   layout: "1",
   primaryColor: "#0f172a",
   secondaryColor: "#d4af37",
+  themePalette: "cream-sage",
   token: ""
 });
 
@@ -80,6 +81,7 @@ export default function DemoThemeProvider({ config, children }) {
     layout: config?.layout || "1",
     primaryColor: config?.primaryColor || "#0f172a",
     secondaryColor: config?.secondaryColor || "#d4af37",
+    themePalette: config?.themePalette || "cream-sage",
     token: config?.token || ""
   };
 

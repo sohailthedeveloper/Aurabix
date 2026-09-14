@@ -1,4 +1,4 @@
-import { recordVisit, getAllProspects, getStats } from "@/lib/trackingStore"
+import { recordVisit, getAllProspects, getStats, activateToken, deactivateToken, isTokenDeactivated } from "@/lib/trackingStore"
 
 /**
  * POST /api/track
@@ -8,7 +8,7 @@ import { recordVisit, getAllProspects, getStats } from "@/lib/trackingStore"
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { token, name, template, page } = body
+    const { token, name, template, page, action } = body
 
     if (!token) {
       return Response.json({ error: "Token is required" }, { status: 400 })
@@ -20,6 +20,23 @@ export async function POST(request) {
     const userAgent = request.headers.get("user-agent") || ""
     const device = /Mobile|Android|iPhone|iPad/i.test(userAgent) ? "Mobile" : "Desktop"
 
+    // Check if the link is deactivated
+    const deactive = await isTokenDeactivated(token)
+    if (deactive) {
+      // Log the attempted access so the sales rep knows they clicked it
+      await recordVisit({
+        token,
+        name: name || "Unknown Prospect",
+        template: template || "dental",
+        city: decodeURIComponent(city),
+        country,
+        device,
+        page: page || "demo",
+        action: "Attempted to view deactivated page",
+      })
+      return Response.json({ success: false, deactivated: true, error: "Concept page deactivated" })
+    }
+
     const visit = await recordVisit({
       token,
       name: name || "Unknown Prospect",
@@ -28,12 +45,39 @@ export async function POST(request) {
       country,
       device,
       page: page || "demo",
+      action: action || null,
     })
 
     return Response.json({ success: true, visit })
   } catch (error) {
     console.error("Track API Error:", error)
     return Response.json({ error: "Failed to record visit" }, { status: 500 })
+  }
+}
+
+/**
+ * PATCH /api/track
+ * Toggle deactivation status of a prospect token.
+ */
+export async function PATCH(request) {
+  try {
+    const body = await request.json()
+    const { token, active } = body
+
+    if (!token) {
+      return Response.json({ error: "Token is required" }, { status: 400 })
+    }
+
+    if (active) {
+      await activateToken(token)
+    } else {
+      await deactivateToken(token)
+    }
+
+    return Response.json({ success: true, active })
+  } catch (error) {
+    console.error("Track API PATCH Error:", error)
+    return Response.json({ error: "Failed to toggle status" }, { status: 500 })
   }
 }
 

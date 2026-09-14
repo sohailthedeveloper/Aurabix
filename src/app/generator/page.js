@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Papa from 'papaparse';
 
 export default function Generator() {
   const [activeTab, setActiveTab] = useState('generate'); // 'generate' | 'activity'
@@ -8,6 +9,7 @@ export default function Generator() {
     template: 'dental',
     primaryColor: '#0f766e',
     secondaryColor: '#f59e0b',
+    themePalette: 'cream-sage',
     phone: '020 8866 0758',
     whatsapp: '',
     chatbot: true,
@@ -20,12 +22,16 @@ export default function Generator() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [origin, setOrigin] = useState('');
+  const [isProcessingCSV, setIsProcessingCSV] = useState(false);
+  const fileInputRef = useRef(null);
 
   // ── Activity Dashboard State ──
   const [prospects, setProspects] = useState([]);
   const [stats, setStats] = useState({ totalProspects: 0, totalVisits: 0, hotLeads: 0, todayVisits: 0 });
   const [isLoadingActivity, setIsLoadingActivity] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState(null);
+  const [expandedProspectToken, setExpandedProspectToken] = useState(null);
+  const [manualUrl, setManualUrl] = useState('');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -59,6 +65,53 @@ export default function Generator() {
     }
   }, [activeTab]);
 
+  const toggleProspectDeactivation = async (token, currentlyDeactivated) => {
+    try {
+      const res = await fetch('/api/track', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, active: currentlyDeactivated })
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchActivity();
+      } else {
+        alert("Failed to update status.");
+      }
+    } catch (e) {
+      console.error("Failed to toggle status:", e);
+    }
+  };
+
+  const handleManualAction = async (active) => {
+    if (!manualUrl.trim()) return alert("Please enter a URL or token first.");
+    let token = manualUrl.trim();
+    if (token.includes('/demo/')) {
+      const parts = token.split('/demo/');
+      const end = parts[1]?.split('/')?.[0];
+      token = end || parts[1];
+    }
+    
+    try {
+      const res = await fetch('/api/track', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, active })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Pitch successfully ${active ? 'activated' : 'deactivated'}!`);
+        setManualUrl('');
+        fetchActivity();
+      } else {
+        alert("Failed to change status. Verify the URL or token.");
+      }
+    } catch (e) {
+      console.error("Manual toggle failed:", e);
+      alert("An error occurred.");
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -75,6 +128,7 @@ export default function Generator() {
         template: formData.template,
         primaryColor: formData.primaryColor,
         secondaryColor: formData.secondaryColor,
+        themePalette: formData.themePalette,
         phone: formData.phone.trim(),
         whatsapp: formData.whatsapp.trim() || null,
         chatbot: formData.chatbot,
@@ -136,7 +190,7 @@ export default function Generator() {
   };
 
   // Pre-configured cold email template
-  const emailTemplate = formData.template === 'dental' 
+  const emailTemplate = (formData.template === 'dental' || formData.template === 'dental-v2')
     ? `Subject: Quick question about ${formData.name || 'your dental practice'} website
 
 Hi ${formData.name ? `team at ${formData.name}` : 'there'},
@@ -184,6 +238,81 @@ AuraBix Digital Team
 hello@aurabix.com
 https://aurabix.com`;
 
+  // ── CSV Batch Processing ──
+  const downloadCsvTemplate = () => {
+    const headers = "Business Name,Template,Primary Color,Secondary Color,Phone,WhatsApp,Logo URL,Background Style,Layout\n";
+    const example = "Zenith Dental,dental,#0f766e,#f59e0b,020 8866 0758,,,,,";
+    const blob = new Blob([headers + example], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "aurabix_prospects_template.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleCsvUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setIsProcessingCSV(true);
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        const processedRows = results.data.map(row => {
+          const name = row['Business Name']?.trim() || 'Unknown Business';
+          const template = row['Template']?.trim() || 'dental';
+          
+          const payload = {
+            name: name,
+            template: template,
+            primaryColor: row['Primary Color'] || '#0f766e',
+            secondaryColor: row['Secondary Color'] || '#f59e0b',
+            themePalette: row['Theme Palette'] || 'cream-sage',
+            phone: row['Phone'] || '020 8866 0758',
+            whatsapp: row['WhatsApp'] || null,
+            chatbot: true, 
+            bg: row['Background Style'] || 'video',
+            layout: row['Layout'] || '1',
+            logo: row['Logo URL'] || null
+          };
+
+          const jsonStr = JSON.stringify(payload);
+          const utf8Bytes = encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+          });
+          const token = btoa(utf8Bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          const link = `${origin}/demo/${token}`;
+          
+          const email = (template === 'dental' || template === 'dental-v2') 
+            ? `Subject: Quick question about ${name} website\n\nHi team at ${name},\n\nI was looking at your online presence and noticed some opportunities to capture more patients directly from mobile browsers.\n\nTo show you exactly what I mean, I went ahead and built a custom-designed, fully responsive interactive mockup website personalized for ${name}.\n\nYou can view your live clinic concept here:\n${link}\n\nThis customized design includes:\n1. A live AI Booking Assistant configured for ${name} to convert visitors 24/7.\n2. An interactive scheduling form that syncs with Google Calendar.\n3. A before/after cosmetic transformation slider (great for showcasing Invisalign/whitening).\n\nLet me know if you would like me to walk you through how we can deploy this or connect it to your current practice management software.\n\nBest regards,\n\nAuraBix Digital Team\nhello@aurabix.com\nhttps://aurabix.com`
+            : `Subject: Quick question about ${name} website\n\nHi team at ${name},\n\nI was looking at your online presence and noticed some opportunities to capture more customers and boost your conversion rates.\n\nTo show you exactly what I mean, I went ahead and built a custom-designed, fully responsive interactive mockup website personalized for ${name}.\n\nYou can view your live brand concept here:\n${link}\n\nThis customized design includes:\n1. A live AI Booking Assistant configured for ${name} to convert visitors 24/7.\n2. An interactive scheduling and consultation form to automate your intake.\n3. A high-end custom layout adapted to your exact brand colors and styling.\n\nLet me know if you would like me to walk you through how we can deploy this or connect it to your current systems.\n\nBest regards,\n\nAuraBix Digital Team\nhello@aurabix.com\nhttps://aurabix.com`;
+
+          return {
+            ...row,
+            'Demo Link': link,
+            'Email Copy': email
+          };
+        });
+
+        const newCsv = Papa.unparse(processedRows);
+        const blob = new Blob([newCsv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.setAttribute("href", url);
+        a.setAttribute("download", "aurabix_generated_links.csv");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        setIsProcessingCSV(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    });
+  };
+
   // ─── Shared Styles ───
   const inputStyle = { width: '100%', padding: '14px', borderRadius: '10px', border: '1.5px solid rgba(255,255,255,0.1)', outline: 'none', background: 'rgba(255,255,255,0.03)', color: 'white', fontSize: '0.95rem' };
   const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#d1d5db', marginBottom: '8px', textTransform: 'uppercase' };
@@ -230,17 +359,17 @@ https://aurabix.com`;
         </div>
 
         {/* ── Tab Switcher ── */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '2.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', padding: '5px', maxWidth: '420px', margin: '0 auto 2.5rem auto', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '2.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', padding: '5px', maxWidth: '600px', margin: '0 auto 2.5rem auto', border: '1px solid rgba(255,255,255,0.06)' }}>
           <button
             onClick={() => setActiveTab('generate')}
             style={{
               flex: 1,
-              padding: '14px 24px',
+              padding: '14px 16px',
               borderRadius: '12px',
               border: 'none',
               cursor: 'pointer',
               fontWeight: 700,
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
               letterSpacing: '0.5px',
               textTransform: 'uppercase',
               transition: 'all 0.3s ease',
@@ -252,15 +381,35 @@ https://aurabix.com`;
             ⚡ Generate
           </button>
           <button
-            onClick={() => setActiveTab('activity')}
+            onClick={() => setActiveTab('batch')}
             style={{
               flex: 1,
-              padding: '14px 24px',
+              padding: '14px 16px',
               borderRadius: '12px',
               border: 'none',
               cursor: 'pointer',
               fontWeight: 700,
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
+              letterSpacing: '0.5px',
+              textTransform: 'uppercase',
+              transition: 'all 0.3s ease',
+              background: activeTab === 'batch' ? 'linear-gradient(135deg, #d4af37 0%, #aa8416 100%)' : 'transparent',
+              color: activeTab === 'batch' ? '#070a13' : '#6b7280',
+              boxShadow: activeTab === 'batch' ? '0 4px 15px rgba(212, 175, 55, 0.3)' : 'none',
+            }}
+          >
+            📁 Batch
+          </button>
+          <button
+            onClick={() => setActiveTab('activity')}
+            style={{
+              flex: 1,
+              padding: '14px 16px',
+              borderRadius: '12px',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: 700,
+              fontSize: '0.85rem',
               letterSpacing: '0.5px',
               textTransform: 'uppercase',
               transition: 'all 0.3s ease',
@@ -316,7 +465,8 @@ https://aurabix.com`;
                 <div>
                   <label style={labelStyle}>Industry / Niche Template</label>
                   <select name="template" value={formData.template} onChange={handleInputChange} style={selectStyle}>
-                    <option value="dental">Dental Clinic (Fully Active)</option>
+                    <option value="dental">Dental V1 - Standard (Active)</option>
+                    <option value="dental-v2">Dental V2 - Premium Glassmorphism (Active)</option>
                     <option value="salon">Spa & Salon / Medspa (Preview mode)</option>
                     <option value="saas">SaaS & Tech Platform (Preview mode)</option>
                     <option value="ecommerce">E-commerce Brand (Preview mode)</option>
@@ -324,27 +474,48 @@ https://aurabix.com`;
                   </select>
                 </div>
 
-                {/* Primary Color */}
-                <div>
-                  <label style={labelStyle}>Primary Theme Color</label>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <input type="color" name="primaryColor" value={formData.primaryColor} onChange={handleInputChange}
-                      style={{ width: '50px', height: '48px', padding: '0', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }} />
-                    <input type="text" name="primaryColor" value={formData.primaryColor} onChange={handleInputChange}
-                      style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1.5px solid rgba(255,255,255,0.1)', outline: 'none', background: 'rgba(255,255,255,0.03)', color: 'white' }} />
+                {/* Colors / Theme */}
+                {formData.template === 'dental-v2' ? (
+                  <div>
+                    <label style={labelStyle}>Curated Luxury Palette</label>
+                    <select name="themePalette" value={formData.themePalette || 'cream-sage'} onChange={handleInputChange} style={selectStyle}>
+                      <option value="cream-sage">Cream & Sage (Organic & Calming)</option>
+                      <option value="midnight-gold">Midnight & Gold (Dark Luxury)</option>
+                      <option value="obsidian-pearl">Obsidian & Pearl (Ultra Minimalist)</option>
+                      <option value="blush-slate">Blush & Slate (Soft & Clean)</option>
+                      <option value="peach-sage">Peach & Sage (Warm & Earthy)</option>
+                      <option value="navy-rose">Navy & Rose Gold (Trust & Prestige)</option>
+                      <option value="ivory-jade">Ivory & Jade (Fresh & Restorative)</option>
+                      <option value="charcoal-copper">Charcoal & Copper (Industrial Elegance)</option>
+                      <option value="lavender-platinum">Lavender & Platinum (Modern Tranquility)</option>
+                      <option value="sapphire-frost">Sapphire & Frost (Crisp & Professional)</option>
+                    </select>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    {/* Primary Color */}
+                    <div>
+                      <label style={labelStyle}>Primary Theme Color</label>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <input type="color" name="primaryColor" value={formData.primaryColor} onChange={handleInputChange}
+                          style={{ width: '50px', height: '48px', padding: '0', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }} />
+                        <input type="text" name="primaryColor" value={formData.primaryColor} onChange={handleInputChange}
+                          style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1.5px solid rgba(255,255,255,0.1)', outline: 'none', background: 'rgba(255,255,255,0.03)', color: 'white' }} />
+                      </div>
+                    </div>
 
-                {/* Secondary Color */}
-                <div>
-                  <label style={labelStyle}>Secondary Accent Color</label>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <input type="color" name="secondaryColor" value={formData.secondaryColor} onChange={handleInputChange}
-                      style={{ width: '50px', height: '48px', padding: '0', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }} />
-                    <input type="text" name="secondaryColor" value={formData.secondaryColor} onChange={handleInputChange}
-                      style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1.5px solid rgba(255,255,255,0.1)', outline: 'none', background: 'rgba(255,255,255,0.03)', color: 'white' }} />
-                  </div>
-                </div>
+                    {/* Secondary Color */}
+                    <div>
+                      <label style={labelStyle}>Secondary Accent Color</label>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <input type="color" name="secondaryColor" value={formData.secondaryColor} onChange={handleInputChange}
+                          style={{ width: '50px', height: '48px', padding: '0', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }} />
+                        <input type="text" name="secondaryColor" value={formData.secondaryColor} onChange={handleInputChange}
+                          style={{ flex: 1, padding: '12px', borderRadius: '10px', border: '1.5px solid rgba(255,255,255,0.1)', outline: 'none', background: 'rgba(255,255,255,0.03)', color: 'white' }} />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 {/* Phone Number */}
                 <div>
@@ -470,7 +641,70 @@ https://aurabix.com`;
         )}
 
         {/* ════════════════════════════════════════════════════ */}
-        {/* ═══ TAB 2: PROSPECT ACTIVITY DASHBOARD ═════════ */}
+        {/* ═══ TAB 2: CSV BATCH GENERATE ════════════════════ */}
+        {/* ════════════════════════════════════════════════════ */}
+        {activeTab === 'batch' && (
+          <div style={{ ...cardStyle, animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+            <h2 style={{ fontSize: '1.5rem', color: 'white', marginBottom: '1rem', fontWeight: 600 }}>
+              Bulk Generate Links
+            </h2>
+            <p style={{ color: '#9ca3af', marginBottom: '2.5rem', lineHeight: '1.6' }}>
+              Upload a list of prospects to instantly generate personalized demo links and email templates for all of them. The output will automatically download as a new CSV.
+            </p>
+
+            <div style={{ display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+              
+              {/* Step 1: Template */}
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ fontSize: '1.25rem', color: '#d4af37', marginBottom: '1rem', fontWeight: 700 }}>Step 1: Download Template</div>
+                <p style={{ color: '#9ca3af', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                  Use our structured CSV format. Fill in your lead data (Business Name is required, everything else is optional and defaults to standard templates).
+                </p>
+                <button onClick={downloadCsvTemplate} style={{
+                  background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 24px', borderRadius: '10px', cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s', width: '100%'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}>
+                  ⬇️ Download .CSV Template
+                </button>
+              </div>
+
+              {/* Step 2: Upload */}
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ fontSize: '1.25rem', color: '#d4af37', marginBottom: '1rem', fontWeight: 700 }}>Step 2: Upload & Process</div>
+                <p style={{ color: '#9ca3af', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                  Upload your completed CSV file. We'll process all leads instantly and download the final list with links directly to your machine.
+                </p>
+                
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type="file" 
+                    accept=".csv"
+                    ref={fileInputRef}
+                    onChange={handleCsvUpload}
+                    disabled={isProcessingCSV}
+                    style={{
+                      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: isProcessingCSV ? 'not-allowed' : 'pointer', zIndex: 10
+                    }} 
+                  />
+                  <div style={{
+                    background: isProcessingCSV ? '#1f2937' : 'linear-gradient(135deg, #d4af37 0%, #aa8416 100%)',
+                    color: isProcessingCSV ? '#9ca3af' : '#070a13', 
+                    padding: '12px 24px', borderRadius: '10px', 
+                    fontWeight: 700, textAlign: 'center', transition: 'all 0.2s',
+                    boxShadow: isProcessingCSV ? 'none' : '0 8px 24px rgba(212, 175, 55, 0.25)',
+                  }}>
+                    {isProcessingCSV ? '⚙️ Processing CSV...' : '⬆️ Upload & Generate'}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* ════════════════════════════════════════════════════ */}
+        {/* ═══ TAB 3: PROSPECT ACTIVITY DASHBOARD ═════════ */}
         {/* ════════════════════════════════════════════════════ */}
         {activeTab === 'activity' && (
           <div style={{ display: 'grid', gap: '2rem' }}>
@@ -496,6 +730,77 @@ https://aurabix.com`;
                   <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '6px', fontWeight: 600 }}>{stat.label}</div>
                 </div>
               ))}
+            </div>
+
+            {/* ── Direct URL Management Bar ── */}
+            <div style={{
+              background: 'rgba(17, 24, 39, 0.7)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: '16px',
+              padding: '1.5rem',
+            }}>
+              <h3 style={{ fontSize: '1rem', color: 'white', fontWeight: 600, marginBottom: '0.75rem', marginTop: 0 }}>
+                Direct URL Management
+              </h3>
+              <p style={{ fontSize: '0.8rem', color: '#6b7280', margin: '0 0 1rem 0' }}>
+                Paste any generated AuraBix preview URL below to quickly toggle its active status.
+              </p>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <input 
+                  type="text"
+                  placeholder="https://localhost:3000/demo/eyJuYW1l..."
+                  value={manualUrl}
+                  onChange={(e) => setManualUrl(e.target.value)}
+                  style={{
+                    flex: 1,
+                    minWidth: '240px',
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '10px',
+                    padding: '10px 14px',
+                    color: 'white',
+                    outline: 'none',
+                    fontSize: '0.85rem'
+                  }}
+                />
+                <button
+                  onClick={() => handleManualAction(false)} // Deactivate
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.2)',
+                    color: '#f87171',
+                    padding: '10px 18px',
+                    borderRadius: '10px',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                >
+                  🔴 Deactivate URL
+                </button>
+                <button
+                  onClick={() => handleManualAction(true)} // Activate
+                  style={{
+                    background: 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.2)',
+                    color: '#4ade80',
+                    padding: '10px 18px',
+                    borderRadius: '10px',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}
+                >
+                  🟢 Activate URL
+                </button>
+              </div>
             </div>
 
             {/* ── Activity Feed ── */}
@@ -564,9 +869,11 @@ https://aurabix.com`;
                       padding: '1.25rem 1.5rem',
                       transition: 'all 0.3s ease',
                       animation: idx < 3 ? `fadeInUp 0.5s ${idx * 0.1}s both` : 'none',
+                      cursor: 'pointer',
                     }}
-                      onMouseOver={(e) => { e.currentTarget.style.background = isHot ? 'rgba(239, 68, 68, 0.07)' : 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateX(4px)'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.background = isHot ? 'rgba(239, 68, 68, 0.04)' : 'rgba(255,255,255,0.02)'; e.currentTarget.style.transform = 'translateX(0)'; }}
+                      onMouseOver={(e) => { e.currentTarget.style.background = isHot ? 'rgba(239, 68, 68, 0.07)' : 'rgba(255,255,255,0.04)'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.background = isHot ? 'rgba(239, 68, 68, 0.04)' : 'rgba(255,255,255,0.02)'; }}
+                      onClick={() => setExpandedProspectToken(expandedProspectToken === prospect.token ? null : prospect.token)}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>
                         
@@ -576,9 +883,9 @@ https://aurabix.com`;
                             {/* Status Dot */}
                             <span style={{
                               width: '10px', height: '10px', borderRadius: '50%', flexShrink: 0,
-                              background: isHot ? '#ef4444' : visitedBooking ? '#22c55e' : '#6366f1',
-                              boxShadow: isHot ? '0 0 10px rgba(239, 68, 68, 0.5)' : visitedBooking ? '0 0 10px rgba(34, 197, 94, 0.5)' : 'none',
-                              animation: isHot ? 'pulse 2s ease-in-out infinite' : 'none',
+                              background: prospect.deactivated ? '#6b7280' : isHot ? '#ef4444' : visitedBooking ? '#22c55e' : '#6366f1',
+                              boxShadow: prospect.deactivated ? 'none' : isHot ? '0 0 10px rgba(239, 68, 68, 0.5)' : visitedBooking ? '0 0 10px rgba(34, 197, 94, 0.5)' : 'none',
+                              animation: prospect.deactivated ? 'none' : isHot ? 'pulse 2s ease-in-out infinite' : 'none',
                             }} />
                             <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#f3f4f6' }}>{prospect.name}</span>
                             
@@ -593,6 +900,11 @@ https://aurabix.com`;
                                 📅 Viewed Booking
                               </span>
                             )}
+                            {prospect.deactivated && (
+                              <span style={{ padding: '2px 8px', background: 'rgba(107, 114, 128, 0.15)', color: '#9ca3af', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                🚫 Inactive
+                              </span>
+                            )}
                           </div>
 
                           <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: '#6b7280', flexWrap: 'wrap' }}>
@@ -605,15 +917,131 @@ https://aurabix.com`;
                         </div>
 
                         {/* Right: Visit Stats */}
-                        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
                           <div style={{ fontSize: '0.8rem', color: '#d4af37', fontWeight: 600 }}>
                             {prospect.totalVisits} visit{prospect.totalVisits !== 1 ? 's' : ''}
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: '#4b5563', marginTop: '2px' }}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleProspectDeactivation(prospect.token, prospect.deactivated);
+                            }}
+                            style={{
+                              background: prospect.deactivated ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                              border: `1px solid ${prospect.deactivated ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+                              borderRadius: '6px',
+                              padding: '3px 8px',
+                              color: prospect.deactivated ? '#4ade80' : '#f87171',
+                              fontSize: '0.65rem',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                              textTransform: 'uppercase',
+                              outline: 'none',
+                            }}
+                            onMouseOver={(e) => {
+                              e.currentTarget.style.background = prospect.deactivated ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+                            }}
+                            onMouseOut={(e) => {
+                              e.currentTarget.style.background = prospect.deactivated ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)';
+                            }}
+                          >
+                            {prospect.deactivated ? '🟢 Activate' : '🔴 Deactivate'}
+                          </button>
+                          <div style={{ fontSize: '0.75rem', color: '#4b5563' }}>
                             {timeAgo(prospect.lastSeen)}
                           </div>
                         </div>
                       </div>
+
+                      {/* Timeline Audit Log */}
+                      {expandedProspectToken === prospect.token && (
+                        <div style={{
+                          marginTop: '1.5rem',
+                          paddingTop: '1.5rem',
+                          borderTop: '1px solid rgba(255,255,255,0.06)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '12px',
+                          cursor: 'default',
+                        }}
+                          onClick={(e) => e.stopPropagation()} // Prevent collapse on detail click
+                        >
+                          <h4 style={{ fontSize: '0.75rem', color: '#d4af37', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px', fontWeight: 600 }}>
+                            Detailed Activity Timeline
+                          </h4>
+                          
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {prospect.recentVisits?.map((visit, vIdx) => {
+                              let icon = '👁️';
+                              let label = 'Opened Demo Homepage';
+                              let badgeColor = 'rgba(99, 102, 241, 0.15)';
+                              let textColor = '#818cf8';
+
+                              if (visit.action) {
+                                label = visit.action;
+                                if (visit.action.includes('WhatsApp')) {
+                                  icon = '💬';
+                                  badgeColor = 'rgba(34, 197, 94, 0.15)';
+                                  textColor = '#4ade80';
+                                } else if (visit.action.includes('Chatbot') || visit.action.includes('chatbot')) {
+                                  icon = '🤖';
+                                  badgeColor = 'rgba(168, 85, 247, 0.15)';
+                                  textColor = '#c084fc';
+                                } else if (visit.action.includes('Booked') || visit.action.includes('appointment')) {
+                                  icon = '🎉';
+                                  badgeColor = 'rgba(239, 68, 68, 0.15)';
+                                  textColor = '#f87171';
+                                } else if (visit.action.includes('Booking') || visit.action.includes('booking')) {
+                                  icon = '📅';
+                                  badgeColor = 'rgba(251, 146, 60, 0.15)';
+                                  textColor = '#fb923c';
+                                }
+                              } else if (visit.page === 'book') {
+                                icon = '📅';
+                                label = 'Opened Booking Scheduler';
+                                badgeColor = 'rgba(251, 146, 60, 0.15)';
+                                textColor = '#fb923c';
+                              }
+
+                              return (
+                                <div key={vIdx} style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  background: 'rgba(255,255,255,0.01)',
+                                  padding: '8px 12px',
+                                  borderRadius: '8px',
+                                  border: '1px solid rgba(255,255,255,0.03)',
+                                  fontSize: '0.8rem',
+                                  gap: '10px',
+                                  flexWrap: 'wrap'
+                                }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '1rem' }}>{icon}</span>
+                                    <span style={{
+                                      background: badgeColor,
+                                      color: textColor,
+                                      padding: '2px 8px',
+                                      borderRadius: '6px',
+                                      fontWeight: 600,
+                                      fontSize: '0.75rem'
+                                    }}>
+                                      {label}
+                                    </span>
+                                  </div>
+                                  
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#6b7280', fontSize: '0.75rem' }}>
+                                    {visit.city && visit.city !== 'Unknown' && <span>📍 {visit.city}</span>}
+                                    {visit.device && <span>{visit.device === 'Mobile' ? '📱 Mobile' : '💻 Desktop'}</span>}
+                                    <span>{timeAgo(visit.timestamp)}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}

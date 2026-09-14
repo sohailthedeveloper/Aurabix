@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian: #05040a;
+  --color-gold: #DFBA73;
+  --color-electric: #6366F1;
+  --color-violet-glow: #8B5CF6;
+  --color-offwhite: #F3F4F6;
+  --color-muted: #9CA3AF;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+body {
+  background-color: #05040a;
+  color: var(--color-offwhite);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display) !important;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #DFBA73 50%, #9CA3AF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #FFF6E0 0%, #DFBA73 50%, #A47E3B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #E0E7FF 0%, #8B5CF6 50%, #4F46E5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(223, 186, 115, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(223, 186, 115, 0.05);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button:hover {
+  background: rgba(223, 186, 115, 0.08);
+  border-color: rgba(223, 186, 115, 0.4);
+  box-shadow: 0 0 25px rgba(223, 186, 115, 0.25);
+  transform: translateY(-2px);
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}

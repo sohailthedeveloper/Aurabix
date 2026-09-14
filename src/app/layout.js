@@ -1,10 +1,11 @@
-import { Inter, Space_Grotesk } from "next/font/google"
+import { Inter, Space_Grotesk, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import ContactModal from "@/components/ContactModal"
 
-
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" })
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" })
 
 export const metadata = {
   metadataBase: new URL("https://aurabix.com"),
@@ -314,7 +315,7 @@ export default function RootLayout({ children }) {
         <link rel="me" href="https://www.instagram.com/aurabix.official/" />
         <link rel="me" href="https://www.linkedin.com/in/sohailshaikhh/" />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-obsidian text-offwhite selection:bg-gold/30 selection:text-white`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${playfair.variable} ${jakarta.variable} font-sans antialiased bg-obsidian text-offwhite selection:bg-gold/30 selection:text-white`}>
         {children}
         <ContactModal />
       </body>

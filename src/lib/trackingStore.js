@@ -56,9 +56,9 @@ function getMemoryStore() {
 /**
  * Record a prospect visiting their demo page.
  */
-export async function recordVisit({ token, name, template, city, country, device, page }) {
+export async function recordVisit({ token, name, template, city, country, device, page, action }) {
   const timestamp = new Date().toISOString()
-  const visit = { name, token, template, timestamp, city, country, device, page }
+  const visit = { name, token, template, timestamp, city, country, device, page, action }
 
   const redis = getRedis()
 
@@ -111,6 +111,49 @@ export async function recordVisit({ token, name, template, city, country, device
 }
 
 /**
+ * Deactivate a prospect token.
+ */
+export async function deactivateToken(token) {
+  const redis = getRedis()
+  if (redis) {
+    await redis.sadd("deactivated-tokens", token)
+  } else {
+    const store = getMemoryStore()
+    if (!store.deactivated) store.deactivated = new Set()
+    store.deactivated.add(token)
+  }
+}
+
+/**
+ * Reactivate a prospect token.
+ */
+export async function activateToken(token) {
+  const redis = getRedis()
+  if (redis) {
+    await redis.srem("deactivated-tokens", token)
+  } else {
+    const store = getMemoryStore()
+    if (!store.deactivated) store.deactivated = new Set()
+    store.deactivated.delete(token)
+  }
+}
+
+/**
+ * Check if a token is deactivated.
+ */
+export async function isTokenDeactivated(token) {
+  const redis = getRedis()
+  if (redis) {
+    const isDeactivated = await redis.sismember("deactivated-tokens", token)
+    return !!isDeactivated
+  } else {
+    const store = getMemoryStore()
+    if (!store.deactivated) return false
+    return store.deactivated.has(token)
+  }
+}
+
+/**
  * Get all tracked prospects with their visit data.
  * Returns an array sorted by most recent activity.
  */
@@ -131,6 +174,7 @@ export async function getAllProspects() {
 
       const visitsRaw = await redis.lrange(`visits:${token}`, 0, 9) // last 10 visits
       const visits = visitsRaw.map(v => typeof v === "string" ? JSON.parse(v) : v)
+      const deactivated = await redis.sismember("deactivated-tokens", token)
 
       prospects.push({
         token,
@@ -140,6 +184,7 @@ export async function getAllProspects() {
         firstSeen: meta.firstSeen,
         lastSeen: meta.lastSeen,
         recentVisits: visits,
+        deactivated: !!deactivated,
       })
     }
 
@@ -156,6 +201,7 @@ export async function getAllProspects() {
       if (!meta) continue
 
       const allVisits = store.visits.get(token) || []
+      const deactivated = store.deactivated?.has(token) || false
 
       prospects.push({
         token,
@@ -165,6 +211,7 @@ export async function getAllProspects() {
         firstSeen: meta.firstSeen,
         lastSeen: meta.lastSeen,
         recentVisits: allVisits.slice(0, 10),
+        deactivated,
       })
     }
 

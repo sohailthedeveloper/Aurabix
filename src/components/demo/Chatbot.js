@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDemoTheme } from './DemoThemeProvider';
 
 export default function Chatbot() {
-  const { clinicName, clinicPhone, showChatbot } = useDemoTheme();
+  const { clinicName, clinicPhone, showChatbot, token, layout } = useDemoTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -25,13 +25,45 @@ export default function Chatbot() {
 
   if (!showChatbot) return null;
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    if (!token) return;
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token,
+        name: clinicName,
+        template: layout || 'dental',
+        page: 'demo',
+        action: 'Opened Chatbot'
+      })
+    }).catch(() => {});
+  };
+
   const handleSend = (e) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    setMessages(prev => [...prev, { text: inputValue, isBot: false }]);
+    const userMsg = inputValue.trim();
+    setMessages(prev => [...prev, { text: userMsg, isBot: false }]);
     setInputValue('');
     setIsTyping(true);
     setHasUserMessaged(true);
+
+    if (token) {
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token,
+          name: clinicName,
+          template: layout || 'dental',
+          page: 'demo',
+          action: `Sent message to chatbot: "${userMsg.substring(0, 45)}"`
+        })
+      }).catch(() => {});
+    }
+
     setTimeout(() => {
       setMessages(prev => [...prev, {
         text: `Thanks for reaching out! Please call us directly at ${clinicPhone} and our friendly team will be happy to help you book an appointment!`,
@@ -90,7 +122,7 @@ export default function Chatbot() {
       </div>
 
       {!isOpen && (
-        <button className="chatbot-toggle" onClick={() => setIsOpen(true)}>
+        <button className="chatbot-toggle" onClick={handleOpen}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
