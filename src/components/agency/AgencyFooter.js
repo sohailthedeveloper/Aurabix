@@ -13,7 +13,6 @@ export default function AgencyFooter() {
           </div>
           
           <div className="flex items-center gap-8">
-            <Link href="/generator" className="text-sm text-white/60 hover:text-white transition-colors">Concept Generator</Link>
             <a href="mailto:hello@aurabix.com" className="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
             <a href="https://twitter.com/aurabix" className="text-sm text-white/60 hover:text-white transition-colors">Twitter</a>
           </div>

@@ -55,13 +55,13 @@ export default function AgencyHero() {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Link href="/generator" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:scale-105 transition-all duration-300">
-            Launch Generator
+          <a href="mailto:hello@aurabix.com" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-medium hover:scale-105 transition-all duration-300">
+            Book Discovery Call
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-          </Link>
+          </a>
           
-          <Link href="#portfolio" className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-medium text-white/80 hover:text-white transition-colors border border-white/10 hover:bg-white/5">
-            View Live Demos
+          <Link href="#pricing" className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-medium text-white/80 hover:text-white transition-colors border border-white/10 hover:bg-white/5">
+            View Pricing
           </Link>
         </motion.div>
 
