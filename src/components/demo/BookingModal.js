@@ -98,7 +98,7 @@ export default function BookingModal({ isOpen, onClose }) {
       >
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-full hover:bg-black/5 transition-colors z-20"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full hover:bg-black/5 transition-colors z-20"
           style={{ color: mutedText }}
         >
           <X size={20} />
@@ -113,7 +113,7 @@ export default function BookingModal({ isOpen, onClose }) {
                 key="step1" custom={1} variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }}
                 className="absolute inset-0 p-8 sm:p-10 overflow-y-auto"
               >
-                <div className="text-center mb-8">
+                <div className="text-center mb-8 px-4 sm:px-0 mt-2 sm:mt-0">
                   <h3 className="text-3xl mb-2" style={fontHeading}>Private Consultation</h3>
                   <p className="text-sm" style={{ color: mutedText }}>Select your preferred schedule at {clinicName}</p>
                 </div>
