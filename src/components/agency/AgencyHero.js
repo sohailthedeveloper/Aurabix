@@ -34,11 +34,11 @@ export default function AgencyHero() {
         {/* Headline */}
         <motion.h1 
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 leading-[1.1]"
+          className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]"
         >
-          We don't build websites.<br />
+          AI-Powered Next-Gen<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-white/40">
-            We engineer machines.
+            Digital Architecture.
           </span>
         </motion.h1>
 
