@@ -55,7 +55,7 @@ export default function DemoWelcomeModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: "spring", damping: 30, stiffness: 400 }}
-          className="relative w-full max-w-[600px] rounded-[32px] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] border"
+          className="relative w-full max-w-[600px] max-h-[90vh] flex flex-col rounded-[32px] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] border"
           style={{ backgroundColor: bgCream, borderColor: accentSand }}
         >
           {/* Header Area */}
@@ -72,7 +72,7 @@ export default function DemoWelcomeModal() {
           </div>
 
           {/* Content Area */}
-          <div className="p-8 sm:p-10 space-y-6" style={{ backgroundColor: accentSand }}>
+          <div className="p-8 sm:p-10 space-y-6 overflow-y-auto" style={{ backgroundColor: accentSand }}>
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-full shrink-0" style={{ backgroundColor: accentSand, color: textSage }}>
                 <ImageIcon size={20} />

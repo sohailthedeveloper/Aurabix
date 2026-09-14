@@ -90,7 +90,7 @@ export default function BookingModal({ isOpen, onClose }) {
         initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         style={{
-          width: '100%', maxWidth: '500px', backgroundColor: bgCream,
+          width: '100%', maxWidth: '500px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', backgroundColor: bgCream,
           borderRadius: '32px', overflow: 'hidden', position: 'relative',
           boxShadow: '0 25px 50px -12px rgba(44, 76, 59, 0.25)', border: '1px solid rgba(255, 255, 255, 0.5)',
           ...fontBody, color: textSage
@@ -104,7 +104,7 @@ export default function BookingModal({ isOpen, onClose }) {
           <X size={20} />
         </button>
 
-        <div className="p-8 sm:p-10 relative overflow-hidden min-h-[500px]">
+        <div className="relative overflow-hidden w-full flex-1 min-h-[450px] sm:min-h-[500px]">
           <AnimatePresence mode="wait" custom={step === 1 ? -1 : 1}>
             
             {/* ── STEP 1: TIME & TREATMENT ── */}
