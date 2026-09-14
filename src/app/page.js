@@ -15,10 +15,10 @@ export default function Home() {
   return (
     <div className="bg-[#000000] min-h-screen text-white font-sans selection:bg-purple-500/30 selection:text-purple-200">
       
-      {/* Minimalist Top Nav for Agency Site */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 mix-blend-difference flex justify-between items-center pointer-events-none">
-        <img src="/aurabix-logo.png" alt="AuraBix" className="h-8 w-auto pointer-events-auto object-contain brightness-0 invert" />
-        <a href="mailto:hello@aurabix.com" className="text-sm font-medium tracking-wide uppercase text-white/80 hover:text-white transition-colors pointer-events-auto">
+      {/* Top Nav for Agency Site */}
+      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center pointer-events-none bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
+        <img src="/aurabix-logo.png" alt="AuraBix" className="h-8 md:h-10 w-auto pointer-events-auto object-contain" />
+        <a href="mailto:hello@aurabix.com" className="text-sm font-medium tracking-wide uppercase text-white hover:text-purple-400 transition-colors pointer-events-auto">
           Contact Us
         </a>
       </nav>
