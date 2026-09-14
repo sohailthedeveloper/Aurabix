@@ -1,39 +1,36 @@
-import NewNavbar from "@/components/amphora/NewNavbar"
-import NewHero from "@/components/amphora/NewHero"
-import NewShowcase from "@/components/amphora/NewShowcase"
-import NewQuality from "@/components/amphora/NewQuality"
-import NewMarquee from "@/components/amphora/NewMarquee"
-import NewProcess from "@/components/amphora/NewProcess"
-import NewPortfolio from "@/components/amphora/NewPortfolio"
-import NewTeam from "@/components/amphora/NewTeam"
-import NewPricing from "@/components/amphora/NewPricing"
-import NewComparison from "@/components/amphora/NewComparison"
-import NewTestimonials from "@/components/amphora/NewTestimonials"
-import NewBooking from "@/components/amphora/NewBooking"
-import NewFAQ from "@/components/amphora/NewFAQ"
-import NewFooter from "@/components/amphora/NewFooter"
-import WhatsAppWidget from "@/components/WhatsAppWidget"
+import AgencyHero from "@/components/agency/AgencyHero";
+import AgencyStack from "@/components/agency/AgencyStack";
+import AgencyBento from "@/components/agency/AgencyBento";
+import AgencyProcess from "@/components/agency/AgencyProcess";
+import AgencyPricing from "@/components/agency/AgencyPricing";
+import AgencyFooter from "@/components/agency/AgencyFooter";
+
+export const metadata = {
+  title: 'AuraBix | High-Ticket Digital Architecture',
+  description: 'We engineer digital revenue machines for elite medical and dental clinics.',
+}
 
 export default function Home() {
   return (
-    <>
-      <NewNavbar />
-      <main className="bg-[#050505] min-h-screen text-white overflow-x-hidden">
-        <NewHero />
-        <NewShowcase />
-        <NewQuality />
-        <NewMarquee />
-        <NewProcess />
-        <NewPortfolio />
-        <NewTeam />
-        <NewPricing />
-        <NewComparison />
-        <NewTestimonials />
-        <NewBooking />
-        <NewFAQ />
+    <div className="bg-[#000000] min-h-screen text-white font-sans selection:bg-purple-500/30 selection:text-purple-200">
+      
+      {/* Minimalist Top Nav for Agency Site */}
+      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 mix-blend-difference flex justify-between items-center pointer-events-none">
+        <div className="font-bold text-2xl tracking-tighter text-white pointer-events-auto">AuraBix</div>
+        <a href="/generator" className="text-sm font-medium tracking-wide uppercase text-white/80 hover:text-white transition-colors pointer-events-auto">
+          Client Generator
+        </a>
+      </nav>
+
+      <main>
+        <AgencyHero />
+        <AgencyStack />
+        <AgencyBento />
+        <AgencyProcess />
+        <AgencyPricing />
       </main>
-      <NewFooter />
-      <WhatsAppWidget />
-    </>
+
+      <AgencyFooter />
+    </div>
   )
 }
