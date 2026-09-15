@@ -56,7 +56,7 @@ export default function NewHero() {
             y: mousePosition.y * 40
           }}
           transition={{ type: "spring", stiffness: 75, damping: 25 }}
-          className="absolute bottom-0 left-0 right-0 w-full h-[400px] bg-gradient-to-t from-purple-900/30 via-blue-900/10 to-transparent blur-3xl rounded-full"
+          className="absolute bottom-0 left-0 right-0 w-full h-[400px] bg-gradient-to-t from-yellow-900/10 via-amber-900/5 to-transparent blur-3xl rounded-full"
         />
 
         <motion.div
@@ -65,7 +65,7 @@ export default function NewHero() {
             y: mousePosition.y * -70
           }}
           transition={{ type: "spring", stiffness: 60, damping: 20 }}
-          className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[85%] h-[350px] bg-gradient-to-r from-blue-600/40 via-pink-600/40 to-orange-500/40 blur-[100px] opacity-70 rounded-full"
+          className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[85%] h-[350px] bg-gradient-to-r from-yellow-600/10 via-amber-600/10 to-orange-500/10 blur-[100px] opacity-70 rounded-full"
         />
       </div>
 
@@ -88,12 +88,12 @@ export default function NewHero() {
           </div>
 
           <div className="flex flex-col items-center sm:items-start text-xs">
-            <span className="text-white font-semibold">50+ zufriedene Kunden</span>
+            <span className="text-white font-semibold">50+ Elite Brands Scaled</span>
             <div className="flex items-center gap-0.5 text-gold mt-0.5">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                <Star key={i} className="w-3.5 h-3.5 fill-current text-yellow-500" />
               ))}
-              <span className="text-white/60 ml-1.5 font-medium">5.0 Sterne bei Google</span>
+              <span className="text-white/60 ml-1.5 font-medium">5.0 Star Agency</span>
             </div>
           </div>
         </motion.div>
@@ -106,13 +106,13 @@ export default function NewHero() {
           className="max-w-4xl mb-6"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-white">
-            <span className="font-serif italic font-normal text-gradient-orange-pink block sm:inline pr-2">
-              Million-Dollar-Website?
+            <span className="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500 block sm:inline pr-2">
+              AI-Powered
             </span>
             <br className="hidden sm:inline" />
-            <span>Gibt&apos;s bei </span>
+            <span>Next-Gen </span>
             <span className="relative inline-block text-white">
-              uns.
+              Architecture.
               {/* Animated Scribble Wavy Underline */}
               <svg viewBox="0 0 100 10" fill="none" className="absolute -bottom-2 left-0 w-full h-[10px] text-gold">
                 <motion.path
@@ -136,11 +136,7 @@ export default function NewHero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-base sm:text-lg md:text-xl text-white/80 font-light max-w-2xl leading-relaxed mb-10"
         >
-          Professionelle <span className="font-semibold text-white">Websites</span>,{" "}
-          <span className="font-semibold text-white">Landingpages</span> &{" "}
-          <span className="font-semibold text-white">Online-Shops</span>. Erhalte deinen ersten Designentwurf in nur{" "}
-          <span className="font-semibold text-gold underline decoration-wavy underline-offset-4">7 Tagen</span> – komplett{" "}
-          <span className="font-semibold text-white">kostenlos & unverbindlich</span>.
+          We don't just design websites. We engineer <span className="font-semibold text-white">autonomous systems</span> meticulously designed to lower acquisition costs and turn passive traffic into <span className="font-semibold text-white">high-ticket clients</span>.
         </motion.p>
 
         {/* Action Button */}
@@ -158,8 +154,8 @@ export default function NewHero() {
             }}
           >
             {/* Shifting Gradient Background */}
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600/40 via-purple-600/50 to-orange-500/40 opacity-80 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600/70 via-purple-600/80 to-orange-500/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            <span className="absolute inset-0 bg-gradient-to-r from-yellow-600/40 via-amber-600/50 to-orange-500/40 opacity-80 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+            <span className="absolute inset-0 bg-gradient-to-r from-yellow-600/70 via-amber-600/80 to-orange-500/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
             {/* Inner Border Highlight */}
             <span className="absolute inset-0 pointer-events-none rounded-2xl" style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2)" }} />
@@ -169,7 +165,7 @@ export default function NewHero() {
               <span className="absolute top-0 -left-1/2 h-full w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-[25deg] transition-transform duration-700 ease-out group-hover:translate-x-[300%]" />
             </span>
 
-            <span className="relative z-10 whitespace-nowrap">Kostenlosen Entwurf sichern</span>
+            <span className="relative z-10 whitespace-nowrap">Book Discovery Call</span>
             <ArrowUpRight className="w-5 h-5 relative z-10 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
         </motion.div>

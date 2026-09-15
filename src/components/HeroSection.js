@@ -78,8 +78,8 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="font-display text-4xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight mb-8 leading-[1.1] drop-shadow-2xl"
         >
-          We Architect <br className="hidden md:block" />
-          <span className="text-gradient-gold drop-shadow-[0_0_40px_rgba(223,186,115,0.2)]">Exponential Growth.</span>
+          AI-Powered <br className="hidden md:block" />
+          <span className="text-gradient-gold drop-shadow-[0_0_40px_rgba(223,186,115,0.2)]">Business Development.</span>
         </motion.h1>
 
         <motion.p
@@ -88,7 +88,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-base md:text-2xl text-muted max-w-3xl mb-14 leading-relaxed font-sans font-light px-4"
         >
-          AuraBix is a world-class digital partner for ambitious brands. We build high-converting web systems, engineer aggressive organic search dominance, and scale premium marketing ecosystems.
+          AuraBix is a next-gen digital architect. We don't just build websites; we engineer autonomous AI systems that lower acquisition costs and scale your elite brand.
         </motion.p>
 
         <motion.div

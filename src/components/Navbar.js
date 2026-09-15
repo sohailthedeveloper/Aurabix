@@ -30,8 +30,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "Services",  href: "/#services",  isHash: true  },
     { name: "Our Work",  href: "/#portfolio",  isHash: true  },
-    { name: "Pricing",   href: "/pricing",     isHash: false },
-    { name: "Founder",   href: "/founder",     isHash: false },
+    { name: "Pricing",   href: "/#pricing",     isHash: true },
+    { name: "Team",      href: "/#team",        isHash: true },
   ]
 
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20am%20interested%20in%20engineering%20digital%20growth%20for%20my%20brand%20with%20AuraBix%21"
