@@ -45,8 +45,8 @@ const portfolios = [
   }
 ]
 
-// Duplicate the array for infinite scroll illusion when dragging or auto-scrolling
-const extendedPortfolios = [...portfolios, ...portfolios, ...portfolios];
+// Duplicate the array to create an infinite scroll illusion
+const extendedPortfolios = [...portfolios, ...portfolios, ...portfolios, ...portfolios];
 
 export default function PortfolioSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20saw%20your%20real%20portfolio%20creations%20and%20would%20love%20to%20engineer%20similar%20growth%20for%20my%20business%21"
@@ -57,17 +57,16 @@ export default function PortfolioSection() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Auto-scroll logic
+  // Smooth Auto-scroll logic (does not fight with CSS snap)
   useEffect(() => {
     let animationFrameId;
     
     const scroll = () => {
       if (sliderRef.current && !isDragging && !isHovered) {
         sliderRef.current.scrollLeft += 1; // Scroll speed
-        // If we've scrolled past the first set, reset to simulate infinite loop
-        // We check against scrollWidth / 3 since we duplicated array 3 times
-        if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth / 1.5) {
-           sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 3;
+        // Reset seamlessly when we scroll past a full duplicate set
+        if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth / 2) {
+           sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 4;
         }
       }
       animationFrameId = requestAnimationFrame(scroll);
@@ -96,7 +95,7 @@ export default function PortfolioSection() {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed multiplier
+    const walk = (x - startX) * 2; // Fast scroll speed when dragging
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -154,7 +153,7 @@ export default function PortfolioSection() {
           Swipe to explore
         </div>
 
-        {/* Portfolio Slider Container */}
+        {/* Portfolio Slider Container (No CSS Snap to prevent Javascript stutter) */}
         <div 
           ref={sliderRef}
           onMouseDown={handleMouseDown}
@@ -162,28 +161,18 @@ export default function PortfolioSection() {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
-          className={`flex gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory pb-12 pt-4 px-4 md:px-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transform-gpu relative`}
+          className={`flex gap-6 md:gap-8 overflow-x-auto pb-12 pt-4 px-4 md:px-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transform-gpu relative`}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* Hide Webkit Scrollbar */}
           <style dangerouslySetInnerHTML={{__html: `
             div::-webkit-scrollbar { display: none; }
           `}} />
-          
-          {/* Pause Indicator */}
-          {isHovered && !isDragging && (
-             <div className="absolute top-0 right-12 z-30 hidden md:flex items-center gap-2 text-gold text-xs font-bold tracking-widest uppercase bg-[#000000]/80 px-4 py-2 rounded-full border border-gold/20 backdrop-blur-md animate-in fade-in">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-              </svg>
-              Paused
-            </div>
-          )}
 
           {extendedPortfolios.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="group/card flex flex-col justify-between p-5 md:p-6 transform-gpu clippinit-card w-[85vw] md:w-[420px] lg:w-[460px] snap-center shrink-0"
+              className="group/card flex flex-col justify-between p-5 md:p-6 transform-gpu clippinit-card w-[85vw] md:w-[420px] lg:w-[460px] shrink-0"
               style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
             >
               {/* Image Container with Floating Badges */}
