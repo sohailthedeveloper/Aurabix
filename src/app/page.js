@@ -1,41 +1,39 @@
-import AgencyHero from "@/components/agency/AgencyHero";
-import AgencyStack from "@/components/agency/AgencyStack";
-import AgencyBento from "@/components/agency/AgencyBento";
-import AgencyProcess from "@/components/agency/AgencyProcess";
-import AgencyTeam from "@/components/agency/AgencyTeam";
-import AgencyPricing from "@/components/agency/AgencyPricing";
-import NewFooter from "@/components/amphora/NewFooter";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
-
-export const metadata = {
-  title: 'AuraBix | High-Ticket Digital Architecture',
-  description: 'We engineer digital revenue machines for elite medical and dental clinics.',
-}
+import NewNavbar from "@/components/amphora/NewNavbar"
+import NewHero from "@/components/amphora/NewHero"
+import NewShowcase from "@/components/amphora/NewShowcase"
+import NewQuality from "@/components/amphora/NewQuality"
+import NewMarquee from "@/components/amphora/NewMarquee"
+import NewProcess from "@/components/amphora/NewProcess"
+import NewPortfolio from "@/components/amphora/NewPortfolio"
+import NewTeam from "@/components/amphora/NewTeam"
+import NewPricing from "@/components/amphora/NewPricing"
+import NewComparison from "@/components/amphora/NewComparison"
+import NewTestimonials from "@/components/amphora/NewTestimonials"
+import NewBooking from "@/components/amphora/NewBooking"
+import NewFAQ from "@/components/amphora/NewFAQ"
+import NewFooter from "@/components/amphora/NewFooter"
+import WhatsAppWidget from "@/components/WhatsAppWidget"
 
 export default function Home() {
   return (
-    <div className="bg-[#000000] min-h-screen text-white font-sans selection:bg-purple-500/30 selection:text-purple-200">
-      
-      {/* Top Nav for Agency Site */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center pointer-events-none bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
-        {/* mix-blend-screen and invert will turn a white-bg/black-text logo into a transparent-bg/white-text logo! */}
-        <img src="/aurabix-logo.png" alt="AuraBix" className="h-12 md:h-16 w-auto pointer-events-auto object-contain invert mix-blend-screen" />
-        <a href="mailto:hello@aurabix.com" className="text-sm font-medium tracking-wide uppercase text-white hover:text-purple-400 transition-colors pointer-events-auto">
-          Contact Us
-        </a>
-      </nav>
-
-      <main>
-        <AgencyHero />
-        <AgencyStack />
-        <AgencyBento />
-        <AgencyProcess />
-        <AgencyTeam />
-        <AgencyPricing />
+    <>
+      <NewNavbar />
+      <main className="bg-[#050505] min-h-screen text-white overflow-x-hidden">
+        <NewHero />
+        <NewShowcase />
+        <NewQuality />
+        <NewMarquee />
+        <NewProcess />
+        <NewPortfolio />
+        <NewTeam />
+        <NewPricing />
+        <NewComparison />
+        <NewTestimonials />
+        <NewBooking />
+        <NewFAQ />
       </main>
-
       <NewFooter />
       <WhatsAppWidget />
-    </div>
+    </>
   )
 }
