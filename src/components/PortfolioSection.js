@@ -61,11 +61,19 @@ export default function PortfolioSection() {
   useEffect(() => {
     let animationFrameId;
     
+    // Initialize scroll position to the middle to prevent left-side blank spaces
+    if (sliderRef.current && scrollLeft === 0) {
+      sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 4;
+    }
+    
     const scroll = () => {
       if (sliderRef.current && !isDragging && !isHovered) {
         sliderRef.current.scrollLeft += 1; // Scroll speed
         // Reset seamlessly when we scroll past a full duplicate set
         if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth / 2) {
+           sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 4;
+        } else if (sliderRef.current.scrollLeft <= 0) {
+           // If they swipe all the way to the left, seamlessly jump to middle
            sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 4;
         }
       }
@@ -74,7 +82,7 @@ export default function PortfolioSection() {
 
     animationFrameId = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isDragging, isHovered]);
+  }, [isDragging, isHovered, scrollLeft]);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -161,8 +169,10 @@ export default function PortfolioSection() {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
+          onTouchStart={() => setIsDragging(true)}
+          onTouchEnd={() => setIsDragging(false)}
           className={`flex gap-6 md:gap-8 overflow-x-auto pb-12 pt-4 px-4 md:px-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transform-gpu relative`}
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           {/* Hide Webkit Scrollbar */}
           <style dangerouslySetInnerHTML={{__html: `
