@@ -1,6 +1,7 @@
 import { Inter, Space_Grotesk, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import ContactModal from "@/components/ContactModal"
+import SmoothScroll from "@/components/SmoothScroll"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" })
@@ -316,8 +317,10 @@ export default function RootLayout({ children }) {
         <link rel="me" href="https://www.linkedin.com/in/sohailshaikhh/" />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${playfair.variable} ${jakarta.variable} font-sans antialiased bg-obsidian text-offwhite selection:bg-gold/30 selection:text-white`}>
-        {children}
-        <ContactModal />
+        <SmoothScroll>
+          {children}
+          <ContactModal />
+        </SmoothScroll>
       </body>
     </html>
   )

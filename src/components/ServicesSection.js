@@ -57,10 +57,10 @@ export default function ServicesSection() {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="group p-8 md:p-10 rounded-3xl bg-[#090710]/45 border border-white/5 transition-all duration-300 hover:border-gold/25 hover:shadow-[0_0_30px_rgba(223,186,115,0.04)] flex flex-col justify-between transform-gpu"
               >
                 <div>

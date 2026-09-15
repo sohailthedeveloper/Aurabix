@@ -191,10 +191,10 @@ export default function PricingSection() {
           {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.65, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className={`relative flex flex-col rounded-3xl p-7 transition-all duration-500 transform-gpu ${
                 plan.popular
                   ? "border-2 border-gold/50 bg-gradient-to-b from-gold/[0.07] via-gold/[0.03] to-transparent shadow-[0_0_60px_rgba(223,186,115,0.1)] xl:scale-[1.04]"

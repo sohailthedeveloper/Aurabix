@@ -1,13 +1,23 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { openContactModal } from "@/components/ContactModal"
 
 export default function HeroSection() {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
+
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20am%20interested%20in%20scaling%20my%20business%20to%20the%20next%20level%20with%20AuraBix%21"
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[100dvh] py-32 overflow-hidden px-6 bg-[#000000]">
+    <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-[100dvh] py-32 overflow-hidden px-6 bg-[#000000]">
       
       {/* High-Performance Radial Gradient Aura Backdrops (No CSS Blurs for 60+ FPS on Mobile) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -60,7 +70,10 @@ export default function HeroSection() {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto transform-gpu">
+      <motion.div 
+        style={{ y, opacity }}
+        className="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto transform-gpu"
+      >
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,7 +131,7 @@ export default function HeroSection() {
             Explore Projects
           </a>
         </motion.div>
-      </div>
+      </motion.div>
       
       {/* Bottom organic fade */}
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#000000] to-transparent z-10 pointer-events-none" />

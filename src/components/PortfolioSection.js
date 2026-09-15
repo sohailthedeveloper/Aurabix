@@ -112,10 +112,10 @@ export default function PortfolioSection() {
           {portfolios.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="group flex flex-col justify-between p-6 rounded-3xl bg-[#090710]/45 border border-white/5 shadow-2xl transition-all duration-300 hover:border-gold/25 hover:shadow-[0_0_40px_rgba(223,186,115,0.06)] transform-gpu"
             >
               {/* Image Container with Floating Badges */}
