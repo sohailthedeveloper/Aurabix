@@ -30,8 +30,8 @@ export default function ServicesSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20would%20love%20to%20consult%20on%20building%20an%20elite%20digital%20arsenal%20for%20my%20business%21"
 
   return (
-    <section id="services" className="py-20 md:py-32 px-4 md:px-6 relative z-10 overflow-hidden bg-[#000000]">
-      {/* Clippinit Diagonal Glow Background */}
+    <section id="services" className="py-16 md:py-24 px-4 md:px-6 bg-[#000000] relative overflow-hidden z-20">
+      {/* Clippinit Diagonal Background layer */}
       <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut-top opacity-50" />
       <div className="ambient-glow opacity-60 diagonal-cut-top" />
 

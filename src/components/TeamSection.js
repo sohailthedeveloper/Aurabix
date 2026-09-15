@@ -25,7 +25,7 @@ export default function TeamSection() {
   ]
 
   return (
-    <section id="team" className="relative py-20 lg:py-32 overflow-hidden bg-[#000000] z-40">
+    <section id="team" className="py-16 md:py-24 px-4 md:px-6 relative z-10 bg-[#000000] overflow-hidden">
       {/* Clippinit Ambient Glow Background */}
       <div className="ambient-glow opacity-70" />
 

@@ -118,7 +118,7 @@ export default function PricingSection() {
   const waBase = "https://wa.me/919579436423?text="
 
   return (
-    <section id="pricing" className="relative py-20 md:py-32 px-4 md:px-6 bg-[#000000] overflow-hidden z-10">
+    <section id="pricing" className="py-16 md:py-24 px-4 md:px-6 relative z-10 bg-[#000000] overflow-hidden">
 
       {/* Clippinit Ambient Glow Background */}
       <div className="ambient-glow-bottom opacity-60 pointer-events-none" />
