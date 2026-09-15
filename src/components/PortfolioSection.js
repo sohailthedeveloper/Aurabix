@@ -1,11 +1,12 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useRef, useState } from "react"
 
 const portfolios = [
   {
     id: 1,
-    title: "Zenith Premium Dental Platform",
+    title: "Zenith Premium Dental Platform V2",
     category: "Web Architecture & Organic SEO",
     image: "/dental_demo.png",
     tech: ["Next.js", "Tailwind CSS", "Local SEO Schema", "Framer Motion"],
@@ -31,19 +32,6 @@ const portfolios = [
   },
   {
     id: 3,
-    title: "Mobile King of Kondhwa E-Commerce",
-    category: "High-Converting Retail Platform",
-    image: "/ecommerce_demo.png",
-    tech: ["React.js", "Tailwind CSS", "WhatsApp Commerce", "Vercel Edge"],
-    highlights: [
-      "Engineered an ultra-responsive local catalog for premium smart devices",
-      "Integrated highly intuitive catalog filtering and dynamic search logic",
-      "Boosted customer conversions by linking active catalog sessions to WhatsApp"
-    ],
-    link: "https://mobilekingofkondhwa.vercel.app"
-  },
-  {
-    id: 4,
     title: "Dream Doors Realty Portal",
     category: "Premium Real Estate & Geolocation Funnels",
     image: "/corporate_demo.png",
@@ -54,32 +42,45 @@ const portfolios = [
       "Constructed automated WhatsApp scheduler scheduling for premium property viewings"
     ],
     link: "https://dreamdoorsrealty.com"
-  },
-  {
-    id: 5,
-    title: "AuraBix High-Ticket Attribution Suite",
-    category: "Paid Advertising & Attribution Systems",
-    image: "/marketing_dashboard.png",
-    tech: ["Meta Ads API", "Google Analytics 4", "Custom Reporting Dashboard"],
-    highlights: [
-      "Deployed precision retargeting structures for high-ticket agency clients",
-      "Configured advanced multi-touch server attribution tracking systems",
-      "Maintained a verified 400% average ROI across active campaigns"
-    ],
-    link: "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20am%20interested%20in%20setting%20up%20ads%20tracking%20for%20my%20brand%21"
   }
 ]
 
 export default function PortfolioSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20saw%20your%20real%20portfolio%20creations%20and%20would%20love%20to%20engineer%20similar%20growth%20for%20my%20business%21"
+  const sliderRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   return (
     <section id="portfolio" className="py-20 md:py-32 px-4 md:px-6 relative z-10 bg-[#000000] overflow-hidden">
       {/* Clippinit Diagonal Glow Background */}
-      <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut opacity-40" />
-      <div className="ambient-glow opacity-50 diagonal-cut" />
+      <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut opacity-40 pointer-events-none" />
+      <div className="ambient-glow opacity-50 diagonal-cut pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto transform-gpu relative z-10">
+      <div className="max-w-[90rem] mx-auto transform-gpu relative z-10">
         
         {/* Headings */}
         <motion.div 
@@ -87,7 +88,7 @@ export default function PortfolioSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-20 text-center md:text-left md:flex md:items-end md:justify-between transform-gpu"
+          className="mb-16 md:mb-20 text-center md:text-left md:flex md:items-end md:justify-between transform-gpu px-4 md:px-8"
         >
           <div className="max-w-2xl">
             <div className="pill-badge mb-6">Case Studies</div>
@@ -98,29 +99,59 @@ export default function PortfolioSection() {
               Explore the actual production platforms we have engineered, showcasing real speed, high conversion rates, and live deployments.
             </p>
           </div>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:inline-flex clippinit-btn text-sm"
-          >
-            <span>Start Your Transformation</span>
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+          <div className="hidden md:flex flex-col items-end gap-4">
+            <div className="flex items-center gap-3 text-muted/60 text-xs font-semibold tracking-widest uppercase">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Drag to Explore
+            </div>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="clippinit-btn text-sm"
+            >
+              <span>Start Your Transformation</span>
+              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
         </motion.div>
 
-        {/* Portfolio Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 transform-gpu">
+        {/* Mobile Swipe Hint */}
+        <div className="flex items-center justify-center gap-3 mb-8 text-muted/60 text-xs font-semibold tracking-widest uppercase md:hidden">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Swipe to explore
+        </div>
+
+        {/* Portfolio Slider */}
+        <div 
+          ref={sliderRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          className={`flex gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory pb-12 pt-4 px-4 md:px-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transform-gpu`}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {/* Hide Webkit Scrollbar */}
+          <style dangerouslySetInnerHTML={{__html: \`
+            div::-webkit-scrollbar { display: none; }
+          \`}} />
+
           {portfolios.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 60, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex flex-col justify-between p-6 transform-gpu clippinit-card"
+              className="group flex flex-col justify-between p-6 transform-gpu clippinit-card min-w-[90vw] md:min-w-[600px] xl:min-w-[700px] snap-center shrink-0"
+              style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
             >
               {/* Image Container with Floating Badges */}
               <div>
@@ -130,10 +161,11 @@ export default function PortfolioSection() {
                     src={item.image} 
                     alt={item.title} 
                     className="w-full h-full object-cover object-top transition-all duration-700 ease-out group-hover:scale-103 transform-gpu"
+                    draggable="false"
                     loading="lazy"
                   />
                   <span className="absolute top-4 left-4 z-20 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-[#05040a] bg-gold font-sans shadow-lg">
-                    Live Production Platform
+                    Live Production
                   </span>
                 </a>
 
@@ -191,12 +223,12 @@ export default function PortfolioSection() {
         </div>
 
         {/* Bottom CTA on mobile */}
-        <div className="mt-16 text-center md:hidden transform-gpu">
+        <div className="mt-8 text-center md:hidden transform-gpu px-4">
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex clippinit-btn text-sm"
+            className="inline-flex w-full clippinit-btn text-sm"
           >
             <span>Start Your Transformation</span>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,3 +241,4 @@ export default function PortfolioSection() {
     </section>
   )
 }
+
