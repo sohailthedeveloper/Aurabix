@@ -8,7 +8,7 @@ const portfolios = [
     id: 1,
     title: "Zenith Premium Dental Platform V2",
     category: "Web Architecture & Organic SEO",
-    image: "/dental_demo.png",
+    image: "https://image.thum.io/get/width/1200/crop/800/https://dentist-aurabix-digital-118cc63d.vercel.app",
     tech: ["Next.js", "Tailwind CSS", "Local SEO Schema", "Framer Motion"],
     highlights: [
       "Engineered high-converting booking funnels for high-ticket dental implants",
@@ -21,7 +21,7 @@ const portfolios = [
     id: 2,
     title: "Luxe MedSpa & Saloon Ecosystem",
     category: "Luxury Reservation Funnel & UX Design",
-    image: "/medspa_demo.png",
+    image: "https://image.thum.io/get/width/1200/crop/800/https://saloon-one-alpha.vercel.app",
     tech: ["Next.js", "Tailwind CSS", "Headless CMS", "Automation Integrations"],
     highlights: [
       "Designed a sleek glassmorphic booking interface tailored to elite spa clients",
@@ -34,7 +34,7 @@ const portfolios = [
     id: 3,
     title: "Dream Doors Realty Portal",
     category: "Premium Real Estate & Geolocation Funnels",
-    image: "/corporate_demo.png",
+    image: "https://image.thum.io/get/width/1200/crop/800/https://dreamdoorsrealty.com",
     tech: ["Next.js", "Tailwind CSS", "Mapbox APIs", "WhatsApp Lead Engine"],
     highlights: [
       "Engineered an ultra-luxurious, responsive real estate listings portal",
