@@ -15,112 +15,75 @@ const currencies = [
 const plans = [
   {
     id: 1,
-    name: "Starter",
-    tagline: "The perfect launchpad for new businesses.",
+    name: "Digital Infrastructure",
+    tagline: "For brands needing an aesthetic and technical overhaul.",
     icon: "⚡",
     prices: {
-      IN: "₹25,000",
-      US: "$499",
-      GB: "£399",
-      AE: "AED 1,800",
-      AU: "A$799",
-    },
-    delivery: "5–7 Days",
-    features: [
-      "1–3 Pages",
-      "Mobile Responsive Design",
-      "Contact Form Integration",
-      "Basic SEO Setup",
-      "Fast Loading Website",
-      "Social Media Links",
-      "Modern UI Design",
-    ],
-    popular: false,
-    cta: "Start Your Project",
-    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20the%20Starter%20Website%20package!",
-  },
-  {
-    id: 2,
-    name: "Business Growth",
-    tagline: "The complete growth machine for ambitious brands.",
-    icon: "📈",
-    prices: {
-      IN: "₹40,000",
-      US: "$799",
-      GB: "£699",
-      AE: "AED 2,900",
-      AU: "A$1,299",
-    },
-    delivery: "10–14 Days",
-    features: [
-      "5–8 Pages",
-      "Premium UI/UX Design",
-      "Lead Generation Forms",
-      "Google Maps Integration",
-      "WhatsApp Integration",
-      "SEO Optimised Structure",
-      "Analytics & Tracking Setup",
-      "Advanced Animations",
-      "Speed Optimisation",
-    ],
-    popular: true,
-    cta: "Get This Package",
-    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20the%20Business%20Growth%20Website%20package!",
-  },
-  {
-    id: 3,
-    name: "Premium Brand",
-    tagline: "For brands that demand nothing but the best.",
-    icon: "💎",
-    prices: {
-      IN: "₹70,000",
-      US: "$1,499",
-      GB: "£1,199",
-      AE: "AED 5,500",
-      AU: "A$2,499",
+      IN: "₹2,90,000",
+      US: "$3,490",
+      GB: "£2,900",
+      AE: "AED 12,500",
+      AU: "A$5,000",
     },
     delivery: "2–4 Weeks",
     features: [
-      "Fully Custom Design",
-      "High-End Animations",
-      "Booking / Inquiry System",
-      "Conversion-Focused Layout",
-      "Content Strategy Support",
-      "Premium Branding Style",
-      "Advanced SEO Architecture",
-      "Performance Optimisation",
-      "Custom Landing Pages",
+      "Ultra-Premium Next-Gen UI",
+      "5–10 Pages Bespoke Architecture",
+      "Next.js Edge-Deployed Speed",
+      "Mobile-First Optimization",
+      "Standard Integrations & SEO",
     ],
     popular: false,
-    cta: "Get This Package",
-    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20the%20Premium%20Brand%20Website%20package!",
+    cta: "Book Architecture Call",
+    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20the%20Digital%20Infrastructure%20package!",
   },
   {
-    id: 4,
-    name: "Custom Platform",
-    tagline: "Enterprise-grade digital infrastructure, built to scale.",
-    icon: "🏗️",
+    id: 2,
+    name: "AI Conversion Machine",
+    tagline: "A complete autonomous system that pre-qualifies and converts 24/7.",
+    icon: "🧠",
     prices: {
-      IN: "₹2,00,000+",
-      US: "$3,999+",
-      GB: "£3,299+",
-      AE: "AED 14,999+",
-      AU: "A$6,499+",
+      IN: "₹4,90,000",
+      US: "$5,990",
+      GB: "£4,900",
+      AE: "AED 22,000",
+      AU: "A$8,900",
+    },
+    delivery: "4–6 Weeks",
+    features: [
+      "Everything in Digital Infrastructure",
+      "AI Patient/Client Coordinator Chatbot",
+      "Multi-Step Conversion Booking Flow",
+      "Advanced SEO Architecture",
+      "CRM & Zapier Automations",
+    ],
+    popular: true,
+    cta: "Apply for Partnership",
+    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20the%20AI%20Conversion%20Machine%20package!",
+  },
+  {
+    id: 3,
+    name: "Enterprise Buyout",
+    tagline: "Full custom software development with complete IP handover.",
+    icon: "💎",
+    prices: {
+      IN: "₹10,00,000+",
+      US: "$12,000+",
+      GB: "£10,000+",
+      AE: "AED 45,000+",
+      AU: "A$18,000+",
     },
     delivery: "Custom Timeline",
     features: [
-      "Admin Dashboard",
-      "Payment Gateway Integration",
-      "User Accounts & Auth System",
-      "Database Integration",
-      "AI Chat Bot",
-      "Business Automation Features",
-      "Scalable Architecture",
-      "Dedicated Priority Support",
+      "Everything in AI Conversion Machine",
+      "Full Source Code & IP Ownership",
+      "Custom Internal Web-Apps/Portals",
+      "Complex API Integrations",
+      "Dedicated Enterprise Support",
     ],
     popular: false,
-    cta: "Let's Talk",
-    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20a%20Custom%20Platform%20build%20with%20AuraBix!",
+    cta: "Request Custom Quote",
+    waText: "Hi%20Sohail%2C%20I%20am%20interested%20in%20an%20Enterprise%20Buyout%20build!",
   },
 ]
 
@@ -155,7 +118,7 @@ export default function PricingSection() {
   const waBase = "https://wa.me/919579436423?text="
 
   return (
-    <section id="pricing" className="relative py-14 md:py-24 px-6 bg-[#05040a] overflow-hidden z-10">
+    <section id="pricing" className="relative py-14 md:py-24 px-6 bg-[#000000] overflow-hidden z-10">
 
       {/* Background aura */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -210,7 +173,7 @@ export default function PricingSection() {
               onClick={() => setSelected(cur.code)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 transform-gpu ${
                 selected === cur.code
-                  ? "bg-gold text-[#05040a] shadow-[0_0_24px_rgba(223,186,115,0.45)]"
+                  ? "bg-gold text-[#000000] shadow-[0_0_24px_rgba(223,186,115,0.45)]"
                   : "bg-white/[0.04] text-muted border border-white/8 hover:border-gold/30 hover:text-white"
               }`}
             >
@@ -224,7 +187,7 @@ export default function PricingSection() {
         </motion.div>
 
         {/* ── Pricing Cards ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-stretch mb-20 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
@@ -240,7 +203,7 @@ export default function PricingSection() {
             >
               {/* Popular Badge */}
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gold rounded-full text-[#05040a] text-[11px] font-bold uppercase tracking-[0.2em] whitespace-nowrap shadow-lg">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gold rounded-full text-[#000000] text-[11px] font-bold uppercase tracking-[0.2em] whitespace-nowrap shadow-lg">
                   Most Popular
                 </div>
               )}
@@ -310,7 +273,7 @@ export default function PricingSection() {
                 })}
                 className={`w-full py-4 rounded-xl text-center text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 transform-gpu cursor-pointer ${
                   plan.popular
-                    ? "bg-gold text-[#05040a] hover:shadow-[0_0_30px_rgba(223,186,115,0.45)] hover:-translate-y-1"
+                    ? "bg-gold text-[#000000] hover:shadow-[0_0_30px_rgba(223,186,115,0.45)] hover:-translate-y-1"
                     : "bg-white/[0.04] border border-white/[0.08] text-offwhite hover:border-gold/40 hover:text-gold hover:bg-white/[0.07]"
                 }`}
               >

@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="bg-[#05040a] min-h-screen text-white overflow-x-hidden">
+      <main className="bg-[#000000] min-h-screen text-white overflow-x-hidden">
         <HeroSection />
         <SocialProof />
         <ServicesSection />

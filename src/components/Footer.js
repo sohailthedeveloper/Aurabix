@@ -6,7 +6,7 @@ export default function Footer() {
   const instagramUrl = "https://www.instagram.com/aurabix.official/"
 
   return (
-    <footer className="pt-10 md:pt-16 pb-8 border-t border-white/5 bg-[#05040a] relative z-10">
+    <footer className="pt-10 md:pt-16 pb-8 border-t border-white/5 bg-[#000000] relative z-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
         
         {/* Brand Info */}
@@ -58,10 +58,10 @@ export default function Footer() {
               <a href="/#portfolio" className="hover:text-gold transition-colors duration-300">Our Work</a>
             </li>
             <li>
-              <a href="/pricing" className="hover:text-gold transition-colors duration-300">Pricing</a>
+              <a href="/#pricing" className="hover:text-gold transition-colors duration-300">Pricing</a>
             </li>
             <li>
-              <a href="/founder" className="hover:text-gold transition-colors duration-300">Founder&apos;s Philosophy</a>
+              <a href="/#team" className="hover:text-gold transition-colors duration-300">Team & Philosophy</a>
             </li>
           </ul>
         </div>

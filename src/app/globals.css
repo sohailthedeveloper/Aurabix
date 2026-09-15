@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-obsidian: #05040a;
-  --color-gold: #DFBA73;
+  --color-obsidian: #000000;
+  --color-gold: #EAB308;
   --color-electric: #6366F1;
   --color-violet-glow: #8B5CF6;
   --color-offwhite: #F3F4F6;
@@ -13,7 +13,7 @@
 }
 
 body {
-  background-color: #05040a;
+  background-color: #000000;
   color: var(--color-offwhite);
   font-family: var(--font-sans);
   overflow-x: hidden;

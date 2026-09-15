@@ -50,7 +50,7 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 transform-gpu ${
           scrolled
-            ? "py-3 bg-[#05040a]/80 backdrop-blur-2xl border-b border-white/[0.06] shadow-2xl"
+            ? "py-3 bg-[#000000]/80 backdrop-blur-2xl border-b border-white/[0.06] shadow-2xl"
             : "py-5 bg-transparent"
         }`}
       >

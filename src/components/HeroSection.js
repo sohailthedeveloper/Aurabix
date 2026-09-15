@@ -7,7 +7,7 @@ export default function HeroSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20am%20interested%20in%20scaling%20my%20business%20to%20the%20next%20level%20with%20AuraBix%21"
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[100dvh] py-32 overflow-hidden px-6 bg-[#05040a]">
+    <section className="relative flex flex-col items-center justify-center min-h-[100dvh] py-32 overflow-hidden px-6 bg-[#000000]">
       
       {/* High-Performance Radial Gradient Aura Backdrops (No CSS Blurs for 60+ FPS on Mobile) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -121,7 +121,7 @@ export default function HeroSection() {
       </div>
       
       {/* Bottom organic fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#05040a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#000000] to-transparent z-10 pointer-events-none" />
     </section>
   )
 }
