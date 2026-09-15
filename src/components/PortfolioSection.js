@@ -52,22 +52,24 @@ export default function PortfolioSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20saw%20your%20real%20portfolio%20creations%20and%20would%20love%20to%20engineer%20similar%20growth%20for%20my%20business%21"
   
   const sliderRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  
+  // Use refs instead of state to PREVENT React re-renders which cause jitter during mobile vertical scrolling
+  const isDraggingRef = useRef(false);
+  const isHoveredRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
 
   // Smooth Auto-scroll logic (does not fight with CSS snap)
   useEffect(() => {
     let animationFrameId;
     
     // Initialize scroll position to the middle to prevent left-side blank spaces
-    if (sliderRef.current && scrollLeft === 0) {
+    if (sliderRef.current && sliderRef.current.scrollLeft === 0) {
       sliderRef.current.scrollLeft = sliderRef.current.scrollWidth / 4;
     }
     
     const scroll = () => {
-      if (sliderRef.current && !isDragging && !isHovered) {
+      if (sliderRef.current && !isDraggingRef.current && !isHoveredRef.current) {
         sliderRef.current.scrollLeft += 1; // Scroll speed
         // Reset seamlessly when we scroll past a full duplicate set
         if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth / 2) {
@@ -82,29 +84,32 @@ export default function PortfolioSection() {
 
     animationFrameId = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [isDragging, isHovered, scrollLeft]);
+  }, []);
 
   const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - sliderRef.current.offsetLeft;
+    scrollLeftRef.current = sliderRef.current.scrollLeft;
+    if (sliderRef.current) sliderRef.current.style.cursor = 'grabbing';
   };
 
   const handleMouseLeave = () => {
-    setIsDragging(false);
-    setIsHovered(false);
+    isDraggingRef.current = false;
+    isHoveredRef.current = false;
+    if (sliderRef.current) sliderRef.current.style.cursor = 'grab';
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
+    isDraggingRef.current = false;
+    if (sliderRef.current) sliderRef.current.style.cursor = 'grab';
   };
 
   const handleMouseMove = (e) => {
-    if (!isDragging) return;
+    if (!isDraggingRef.current) return;
     e.preventDefault();
     const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Fast scroll speed when dragging
-    sliderRef.current.scrollLeft = scrollLeft - walk;
+    const walk = (x - startXRef.current) * 2; // Fast scroll speed when dragging
+    sliderRef.current.scrollLeft = scrollLeftRef.current - walk;
   };
 
   return (
@@ -168,10 +173,10 @@ export default function PortfolioSection() {
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
-          onTouchStart={() => setIsDragging(true)}
-          onTouchEnd={() => setIsDragging(false)}
-          className={`flex gap-6 md:gap-8 overflow-x-auto pb-12 pt-4 px-4 md:px-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transform-gpu relative`}
+          onMouseEnter={() => isHoveredRef.current = true}
+          onTouchStart={() => isDraggingRef.current = true}
+          onTouchEnd={() => isDraggingRef.current = false}
+          className="flex gap-6 md:gap-8 overflow-x-auto pb-12 pt-4 px-4 md:px-8 cursor-grab transform-gpu relative"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           {/* Hide Webkit Scrollbar */}
@@ -183,7 +188,6 @@ export default function PortfolioSection() {
             <div
               key={`${item.id}-${index}`}
               className="group/card flex flex-col justify-between p-5 md:p-6 transform-gpu clippinit-card w-[85vw] md:w-[420px] lg:w-[460px] shrink-0"
-              style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
             >
               {/* Image Container with Floating Badges */}
               <div>
