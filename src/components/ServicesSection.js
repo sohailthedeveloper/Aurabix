@@ -30,7 +30,7 @@ export default function ServicesSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20would%20love%20to%20consult%20on%20building%20an%20elite%20digital%20arsenal%20for%20my%20business%21"
 
   return (
-    <section id="services" className="py-32 px-6 relative z-10 overflow-hidden bg-[#000000]">
+    <section id="services" className="py-20 md:py-32 px-4 md:px-6 relative z-10 overflow-hidden bg-[#000000]">
       {/* Clippinit Diagonal Glow Background */}
       <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut-top opacity-50" />
       <div className="ambient-glow opacity-60 diagonal-cut-top" />
@@ -46,16 +46,16 @@ export default function ServicesSection() {
           className="text-center mb-24 transform-gpu"
         >
           <div className="pill-badge mb-6">Engineered Growth</div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight px-2">
             The <span className="text-gradient">AuraBix Arsenal</span>
           </h2>
-          <p className="text-muted text-lg max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-muted text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed px-2">
             Four pillars of digital domination designed to elevate premium clinics, high-end spas, and ambitious professionals.
           </p>
         </motion.div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 transform-gpu">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 transform-gpu">
           {services.map((service, index) => {
             const Icon = service.icon
             return (

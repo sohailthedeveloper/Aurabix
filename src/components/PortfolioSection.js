@@ -74,7 +74,7 @@ export default function PortfolioSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20saw%20your%20real%20portfolio%20creations%20and%20would%20love%20to%20engineer%20similar%20growth%20for%20my%20business%21"
 
   return (
-    <section id="portfolio" className="py-32 px-6 relative z-10 bg-[#000000] overflow-hidden">
+    <section id="portfolio" className="py-20 md:py-32 px-4 md:px-6 relative z-10 bg-[#000000] overflow-hidden">
       {/* Clippinit Diagonal Glow Background */}
       <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut opacity-40" />
       <div className="ambient-glow opacity-50 diagonal-cut" />
@@ -91,10 +91,10 @@ export default function PortfolioSection() {
         >
           <div className="max-w-2xl">
             <div className="pill-badge mb-6">Case Studies</div>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight px-2 md:px-0">
               Elite Digital <span className="text-gradient">Creations</span>
             </h2>
-            <p className="text-muted text-lg font-light leading-relaxed">
+            <p className="text-muted text-base md:text-lg font-light leading-relaxed px-2 md:px-0">
               Explore the actual production platforms we have engineered, showcasing real speed, high conversion rates, and live deployments.
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function PortfolioSection() {
         </motion.div>
 
         {/* Portfolio Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 transform-gpu">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 transform-gpu">
           {portfolios.map((item, index) => (
             <motion.div
               key={item.id}

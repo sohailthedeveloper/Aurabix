@@ -17,7 +17,7 @@ export default function HeroSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20am%20interested%20in%20scaling%20my%20business%20to%20the%20next%20level%20with%20AuraBix%21"
 
   return (
-    <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-[100dvh] py-32 overflow-hidden px-6 bg-[#000000]">
+    <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-[100dvh] py-20 md:py-32 overflow-hidden px-4 md:px-6 bg-[#000000]">
       
       {/* High-Performance Radial Gradient Aura Backdrops (No CSS Blurs for 60+ FPS on Mobile) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -77,9 +77,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-4xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight mb-8 leading-[1.1] drop-shadow-2xl"
+          className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] drop-shadow-2xl px-2"
         >
-          AI-Powered <br className="hidden md:block" />
+          AI-Powered <br />
           <span className="text-gradient-gold drop-shadow-[0_0_40px_rgba(223,186,115,0.2)]">Business Development.</span>
         </motion.h1>
 
@@ -87,7 +87,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-base md:text-2xl text-muted max-w-3xl mb-14 leading-relaxed font-sans font-light px-4"
+          className="text-base sm:text-lg md:text-2xl text-muted max-w-3xl mb-10 md:mb-14 leading-relaxed font-sans font-light px-4"
         >
           AuraBix is a next-gen digital architect. We don't just build websites; we engineer autonomous AI systems that lower acquisition costs and scale your elite brand.
         </motion.p>

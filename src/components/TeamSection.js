@@ -25,7 +25,7 @@ export default function TeamSection() {
   ]
 
   return (
-    <section id="team" className="relative py-24 lg:py-32 overflow-hidden bg-[#000000] z-40">
+    <section id="team" className="relative py-20 lg:py-32 overflow-hidden bg-[#000000] z-40">
       {/* Clippinit Ambient Glow Background */}
       <div className="ambient-glow opacity-70" />
 
@@ -40,10 +40,10 @@ export default function TeamSection() {
           <div className="pill-badge mb-6">
             The Architects
           </div>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6 px-2">
             Engineered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-600">Experts.</span>
           </h2>
-          <p className="text-white/50 text-lg md:text-xl max-w-2xl mx-auto font-light">
+          <p className="text-white/50 text-base md:text-xl max-w-2xl mx-auto font-light px-4">
             We are not just developers. We are business growth engineers building autonomous AI systems that dominate markets.
           </p>
         </motion.div>
@@ -57,7 +57,7 @@ export default function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative rounded-[2rem] overflow-hidden bg-[#0A0A0A] border border-white/[0.06] hover:border-gold/40 transition-all duration-500 hover:-translate-y-2 aspect-[3/4]"
+              className="group relative rounded-[2rem] overflow-hidden bg-[#0A0A0A] border border-white/[0.06] hover:border-gold/40 transition-all duration-500 hover:-translate-y-2 aspect-[4/5] md:aspect-[3/4]"
               style={{
                 boxShadow: "0 20px 40px -20px rgba(0,0,0,0.8)"
               }}

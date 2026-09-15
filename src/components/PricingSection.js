@@ -118,7 +118,7 @@ export default function PricingSection() {
   const waBase = "https://wa.me/919579436423?text="
 
   return (
-    <section id="pricing" className="relative py-14 md:py-24 px-6 bg-[#000000] overflow-hidden z-10">
+    <section id="pricing" className="relative py-20 md:py-32 px-4 md:px-6 bg-[#000000] overflow-hidden z-10">
 
       {/* Clippinit Ambient Glow Background */}
       <div className="ambient-glow-bottom opacity-60 pointer-events-none" />
@@ -136,11 +136,11 @@ export default function PricingSection() {
           <div className="pill-badge mb-6">
             Transparent Pricing
           </div>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight mb-5">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight mb-4 md:mb-5 px-2">
             Investment Plans for{" "}
             <span className="text-gradient-gold">Elite Brands</span>
           </h1>
-          <p className="text-muted text-lg max-w-xl mx-auto font-light leading-relaxed">
+          <p className="text-muted text-base md:text-lg max-w-xl mx-auto font-light leading-relaxed px-2">
             No hidden fees. No surprises. Premium digital infrastructure — priced for your market.
           </p>
         </motion.div>
@@ -181,7 +181,7 @@ export default function PricingSection() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative flex flex-col rounded-3xl p-7 transition-all duration-500 transform-gpu ${
+              className={`relative flex flex-col rounded-3xl p-6 md:p-7 transition-all duration-500 transform-gpu ${
                 plan.popular
                   ? "border-2 border-gold/50 bg-gradient-to-b from-gold/[0.07] via-gold/[0.03] to-[#0c0804] shadow-[0_0_60px_rgba(223,186,115,0.1)] xl:scale-[1.04]"
                   : "clippinit-card"
