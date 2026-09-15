@@ -139,9 +139,9 @@ export default function PortfolioSection() {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* Hide Webkit Scrollbar */}
-          <style dangerouslySetInnerHTML={{__html: \`
+          <style dangerouslySetInnerHTML={{__html: `
             div::-webkit-scrollbar { display: none; }
-          \`}} />
+          `}} />
 
           {portfolios.map((item, index) => (
             <motion.div
