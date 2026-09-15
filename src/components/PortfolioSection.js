@@ -74,8 +74,12 @@ export default function PortfolioSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20saw%20your%20real%20portfolio%20creations%20and%20would%20love%20to%20engineer%20similar%20growth%20for%20my%20business%21"
 
   return (
-    <section id="portfolio" className="py-32 px-6 relative z-10 bg-black/30 border-y border-white/5 overflow-hidden">
-      <div className="max-w-7xl mx-auto transform-gpu">
+    <section id="portfolio" className="py-32 px-6 relative z-10 bg-[#000000] overflow-hidden">
+      {/* Clippinit Diagonal Glow Background */}
+      <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut opacity-40" />
+      <div className="ambient-glow opacity-50 diagonal-cut" />
+      
+      <div className="max-w-7xl mx-auto transform-gpu relative z-10">
         
         {/* Headings */}
         <motion.div 
@@ -86,7 +90,7 @@ export default function PortfolioSection() {
           className="mb-20 text-center md:text-left md:flex md:items-end md:justify-between transform-gpu"
         >
           <div className="max-w-2xl">
-            <div className="inline-block mb-4 text-xs font-bold tracking-[0.2em] text-gold uppercase">Case Studies</div>
+            <div className="pill-badge mb-6">Case Studies</div>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
               Elite Digital <span className="text-gradient">Creations</span>
             </h2>
@@ -98,9 +102,9 @@ export default function PortfolioSection() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-gold hover:text-white transition-colors duration-300 group transform-gpu"
+            className="hidden md:inline-flex clippinit-btn text-sm"
           >
-            Start Your Transformation
+            <span>Start Your Transformation</span>
             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -116,7 +120,7 @@ export default function PortfolioSection() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex flex-col justify-between p-6 rounded-3xl bg-[#090710]/45 border border-white/5 shadow-2xl transition-all duration-300 hover:border-gold/25 hover:shadow-[0_0_40px_rgba(223,186,115,0.06)] transform-gpu"
+              className="group flex flex-col justify-between p-6 transform-gpu clippinit-card"
             >
               {/* Image Container with Floating Badges */}
               <div>
@@ -192,9 +196,9 @@ export default function PortfolioSection() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-gold hover:text-white transition-colors duration-300"
+            className="inline-flex clippinit-btn text-sm"
           >
-            Start Your Transformation
+            <span>Start Your Transformation</span>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>

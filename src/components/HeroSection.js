@@ -28,20 +28,9 @@ export default function HeroSection() {
             background: "radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0) 70%)"
           }}
         />
-        {/* Soft Violet/Plum Aura */}
-        <div 
-          className="absolute bottom-[-10%] right-[-10%] w-[120%] md:w-[80%] aspect-square opacity-50 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, rgba(139, 92, 246, 0) 70%)"
-          }}
-        />
-        {/* Subtle Champagne Accent Glow */}
-        <div 
-          className="absolute top-[20%] right-[10%] w-[100%] md:w-[60%] aspect-square opacity-40 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(223, 186, 115, 0.04) 0%, rgba(223, 186, 115, 0) 60%)"
-          }}
-        />
+        
+        {/* Clippinit Ambient Glow */}
+        <div className="ambient-glow opacity-80" />
         
         {/* Hardware-Accelerated 2D Rotating Ring (Desktop Only, Completely hidden on Mobile to prevent rendering lag) */}
         <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-20 transform-gpu pointer-events-none">
@@ -79,9 +68,8 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full border border-white/5 bg-white/3 backdrop-blur-xl">
-            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-            <span className="text-xs md:text-sm font-semibold tracking-[0.25em] text-muted uppercase">Elite Digital Infrastructure</span>
+          <div className="pill-badge mb-8">
+            Elite Digital Infrastructure
           </div>
         </motion.div>
 
@@ -112,15 +100,12 @@ export default function HeroSection() {
         >
           <button 
             onClick={() => openContactModal()}
-            className="group relative w-full sm:w-auto overflow-hidden px-10 py-4.5 rounded-full bg-gradient-to-r from-gold to-[#B45309] text-black font-bold font-sans tracking-wide transition-all duration-300 hover:shadow-[0_0_30px_rgba(223,186,115,0.35)] flex items-center justify-center gap-3 transform-gpu cursor-pointer"
+            className="clippinit-btn w-full sm:w-auto text-sm"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              Book a Strategy Call
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </span>
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+            <span>Book a Strategy Call</span>
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </button>
 
           {/* Secondary CTA */}

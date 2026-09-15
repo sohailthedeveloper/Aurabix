@@ -25,9 +25,9 @@ export default function TeamSection() {
   ]
 
   return (
-    <section id="team" className="relative py-24 lg:py-32 overflow-hidden bg-[#000000] z-40 border-b border-white/[0.04]">
-      {/* Absolute Pitch Black Background with Gold Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-yellow-600/10 rounded-full blur-[120px] pointer-events-none" />
+    <section id="team" className="relative py-24 lg:py-32 overflow-hidden bg-[#000000] z-40">
+      {/* Clippinit Ambient Glow Background */}
+      <div className="ambient-glow opacity-70" />
 
       <div className="px-6 sm:px-8 max-w-7xl mx-auto relative z-10">
         <motion.div
@@ -37,7 +37,7 @@ export default function TeamSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16 md:mb-24"
         >
-          <div className="inline-block mb-4 text-[10px] md:text-xs font-bold tracking-[0.3em] text-gold uppercase bg-gold/5 px-4 py-1.5 rounded-full border border-gold/20">
+          <div className="pill-badge mb-6">
             The Architects
           </div>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">

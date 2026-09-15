@@ -30,8 +30,12 @@ export default function ServicesSection() {
   const whatsappUrl = "https://wa.me/919579436423?text=Hi%20Sohail%2C%20I%20would%20love%20to%20consult%20on%20building%20an%20elite%20digital%20arsenal%20for%20my%20business%21"
 
   return (
-    <section id="services" className="py-32 px-6 relative z-10 overflow-hidden">
-      <div className="max-w-6xl mx-auto transform-gpu">
+    <section id="services" className="py-32 px-6 relative z-10 overflow-hidden bg-[#000000]">
+      {/* Clippinit Diagonal Glow Background */}
+      <div className="absolute inset-0 z-0 bg-[#0c0804] diagonal-cut-top opacity-50" />
+      <div className="ambient-glow opacity-60 diagonal-cut-top" />
+
+      <div className="max-w-6xl mx-auto transform-gpu relative z-10">
         
         {/* Header */}
         <motion.div 
@@ -41,7 +45,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-24 transform-gpu"
         >
-          <div className="inline-block mb-4 text-xs font-bold tracking-[0.2em] text-gold uppercase">Engineered Growth</div>
+          <div className="pill-badge mb-6">Engineered Growth</div>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
             The <span className="text-gradient">AuraBix Arsenal</span>
           </h2>
@@ -61,7 +65,7 @@ export default function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="group p-8 md:p-10 rounded-3xl bg-[#090710]/45 border border-white/5 transition-all duration-300 hover:border-gold/25 hover:shadow-[0_0_30px_rgba(223,186,115,0.04)] flex flex-col justify-between transform-gpu"
+                className="group p-8 md:p-10 flex flex-col justify-between transform-gpu clippinit-card"
               >
                 <div>
                   {/* Glowing Icon Container */}

@@ -120,22 +120,8 @@ export default function PricingSection() {
   return (
     <section id="pricing" className="relative py-14 md:py-24 px-6 bg-[#000000] overflow-hidden z-10">
 
-      {/* Background aura */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full opacity-[0.04]"
-          style={{ background: "radial-gradient(circle, rgba(223,186,115,1) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)",
-            backgroundSize: "4rem 4rem",
-            maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, #000 20%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, #000 20%, transparent 100%)",
-          }}
-        />
-      </div>
+      {/* Clippinit Ambient Glow Background */}
+      <div className="ambient-glow-bottom opacity-60 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
 
@@ -147,7 +133,7 @@ export default function PricingSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-8 md:mb-12"
         >
-          <div className="inline-block mb-4 text-xs font-bold tracking-[0.25em] text-gold uppercase">
+          <div className="pill-badge mb-6">
             Transparent Pricing
           </div>
           <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight mb-5">
@@ -197,8 +183,8 @@ export default function PricingSection() {
               transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className={`relative flex flex-col rounded-3xl p-7 transition-all duration-500 transform-gpu ${
                 plan.popular
-                  ? "border-2 border-gold/50 bg-gradient-to-b from-gold/[0.07] via-gold/[0.03] to-transparent shadow-[0_0_60px_rgba(223,186,115,0.1)] xl:scale-[1.04]"
-                  : "border border-white/[0.07] bg-white/[0.025] hover:border-gold/20 hover:shadow-[0_0_40px_rgba(223,186,115,0.05)]"
+                  ? "border-2 border-gold/50 bg-gradient-to-b from-gold/[0.07] via-gold/[0.03] to-[#0c0804] shadow-[0_0_60px_rgba(223,186,115,0.1)] xl:scale-[1.04]"
+                  : "clippinit-card"
               }`}
             >
               {/* Popular Badge */}
@@ -273,7 +259,7 @@ export default function PricingSection() {
                 })}
                 className={`w-full py-4 rounded-xl text-center text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 transform-gpu cursor-pointer ${
                   plan.popular
-                    ? "bg-gold text-[#000000] hover:shadow-[0_0_30px_rgba(223,186,115,0.45)] hover:-translate-y-1"
+                    ? "clippinit-btn text-sm"
                     : "bg-white/[0.04] border border-white/[0.08] text-offwhite hover:border-gold/40 hover:text-gold hover:bg-white/[0.07]"
                 }`}
               >
