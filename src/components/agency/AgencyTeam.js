@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const team = [
   {
     name: "Sohail Shaikh",
-    role: "Founder & Lead Architect",
+    role: "Founder & CEO",
     description: "The mastermind behind the AuraBix architecture. Specializing in high-ticket conversion systems and edge-computing.",
     image: "/founder.jpg"
   },
@@ -13,6 +13,12 @@ const team = [
     name: "Ayush Tyagi",
     role: "Director of Partnerships",
     description: "Driving clinic growth and strategic partnerships. Ensures our digital machines perfectly align with your business goals.",
+    image: null
+  },
+  {
+    name: "Jackson Machado",
+    role: "UK Client Representative",
+    description: "Your direct line to AuraBix. Jackson ensures seamless communication and strategy alignment for our UK-based elite clinics.",
     image: null
   }
 ];
@@ -27,7 +33,7 @@ export default function AgencyTeam() {
           <p className="text-white/50 text-lg">The team building your next digital asset.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 items-start">
           {team.map((member, idx) => (
             <motion.div 
               key={idx}

@@ -40,8 +40,8 @@ export default function AgencyBento() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-6">Built for Conversion.<br/><span className="text-white/40">Engineered for Scale.</span></h2>
-          <p className="text-white/50 text-lg">Every element of our architecture is meticulously designed to lower acquisition costs and turn passive traffic into high-ticket patients.</p>
+          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-6">AI-Powered<br/><span className="text-white/40">Business Development.</span></h2>
+          <p className="text-white/50 text-lg">We don't just design websites. We engineer autonomous systems meticulously designed to lower acquisition costs and turn passive traffic into high-ticket patients.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
