@@ -16,11 +16,6 @@ const nextConfig = {
         source: '/demo',
         destination: '/',
         permanent: true,
-      },
-      {
-        source: '/generator',
-        destination: '/',
-        permanent: true,
       }
     ];
   },
