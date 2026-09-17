@@ -17,13 +17,12 @@ const plans = [
     id: 1,
     name: "Digital Infrastructure",
     tagline: "For brands needing an aesthetic and technical overhaul.",
-    icon: "⚡",
     prices: {
-      IN: "₹2,90,000",
-      US: "$3,490",
+      IN: "₹89,000",
+      US: "$3,900",
       GB: "£2,900",
-      AE: "AED 12,500",
-      AU: "A$5,000",
+      AE: "AED 14,900",
+      AU: "A$5,900",
     },
     delivery: "2–4 Weeks",
     features: [
@@ -41,13 +40,12 @@ const plans = [
     id: 2,
     name: "AI Conversion Machine",
     tagline: "A complete autonomous system that pre-qualifies and converts 24/7.",
-    icon: "🧠",
     prices: {
-      IN: "₹4,90,000",
-      US: "$5,990",
+      IN: "₹1,89,000",
+      US: "$6,900",
       GB: "£4,900",
-      AE: "AED 22,000",
-      AU: "A$8,900",
+      AE: "AED 24,900",
+      AU: "A$9,900",
     },
     delivery: "4–6 Weeks",
     features: [
@@ -65,13 +63,12 @@ const plans = [
     id: 3,
     name: "Enterprise Buyout",
     tagline: "Full custom software development with complete IP handover.",
-    icon: "💎",
     prices: {
-      IN: "₹10,00,000+",
-      US: "$12,000+",
+      IN: "₹4,50,000+",
+      US: "$15,000+",
       GB: "£10,000+",
-      AE: "AED 45,000+",
-      AU: "A$18,000+",
+      AE: "AED 50,000+",
+      AU: "A$20,000+",
     },
     delivery: "Custom Timeline",
     features: [
@@ -194,9 +191,8 @@ export default function PricingSection() {
                 </div>
               )}
 
-              {/* Icon + Name */}
+              {/* Name */}
               <div className="mb-6">
-                <span className="text-3xl mb-3 block">{plan.icon}</span>
                 <h3 className={`font-display text-2xl font-bold mb-1.5 ${plan.popular ? "text-gold" : "text-offwhite"}`}>
                   {plan.name}
                 </h3>
