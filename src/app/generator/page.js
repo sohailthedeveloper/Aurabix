@@ -183,6 +183,15 @@ export default function Generator() {
     return then.toLocaleDateString();
   };
 
+  // ── Duration helper ──
+  const formatDuration = (seconds) => {
+    if (!seconds || seconds <= 0) return '0s';
+    if (seconds < 60) return `${seconds}s`;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}m ${s}s`;
+  };
+
   // ── Niche label helper ──
   const nicheLabel = (template) => {
     const map = { dental: '🦷 Dental', salon: '💆 Spa/Salon', saas: '💻 SaaS', ecommerce: '🛒 E-com', corporate: '🏢 Corporate' };
@@ -714,6 +723,7 @@ https://aurabix.com`;
               {[
                 { label: 'Total Prospects', value: stats.totalProspects, icon: '👤', color: '#6366f1' },
                 { label: 'Total Page Views', value: stats.totalVisits, icon: '👁️', color: '#8b5cf6' },
+                { label: 'Total Time', value: formatDuration(stats.totalDuration), icon: '⏱️', color: '#f59e0b' },
                 { label: 'Hot Leads (2+ views)', value: stats.hotLeads, icon: '🔥', color: '#ef4444' },
                 { label: 'Viewed Today', value: stats.todayVisits, icon: '📅', color: '#22c55e' },
               ].map((stat, i) => (
@@ -919,7 +929,7 @@ https://aurabix.com`;
                         {/* Right: Visit Stats */}
                         <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
                           <div style={{ fontSize: '0.8rem', color: '#d4af37', fontWeight: 600 }}>
-                            {prospect.totalVisits} visit{prospect.totalVisits !== 1 ? 's' : ''}
+                            {formatDuration(prospect.totalDuration)} • {prospect.totalVisits} visit{prospect.totalVisits !== 1 ? 's' : ''}
                           </div>
                           <button
                             onClick={(e) => {

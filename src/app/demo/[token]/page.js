@@ -86,6 +86,43 @@ export default function DemoPage({ params }) {
       .catch(() => {});
   }, [config]);
 
+  // ── Analytics: Track exact duration spent on page ──
+  useEffect(() => {
+    if (!config) return;
+    let startTime = Date.now();
+
+    const sendDuration = () => {
+      const durationSeconds = Math.floor((Date.now() - startTime) / 1000);
+      if (durationSeconds > 0) {
+        const payload = JSON.stringify({
+          token: config.token,
+          action: 'duration',
+          durationSeconds
+        });
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon('/api/track', blob);
+        startTime = Date.now(); // reset timer
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        sendDuration();
+      } else {
+        startTime = Date.now(); // resume timer when tab becomes active again
+      }
+    };
+
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', sendDuration);
+
+    return () => {
+      sendDuration();
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', sendDuration);
+    };
+  }, [config]);
+
   // Scroll Reveal Animations
   useEffect(() => {
     const observerCallback = (entries) => {

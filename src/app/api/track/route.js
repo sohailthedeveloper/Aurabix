@@ -1,4 +1,4 @@
-import { recordVisit, getAllProspects, getStats, activateToken, deactivateToken, isTokenDeactivated } from "@/lib/trackingStore"
+import { recordVisit, getAllProspects, getStats, activateToken, deactivateToken, isTokenDeactivated, updateDuration } from "@/lib/trackingStore"
 
 /**
  * POST /api/track
@@ -35,6 +35,11 @@ export async function POST(request) {
         action: "Attempted to view deactivated page",
       })
       return Response.json({ success: false, deactivated: true, error: "Concept page deactivated" })
+    }
+
+    if (action === "duration" && body.durationSeconds) {
+      await updateDuration(token, body.durationSeconds)
+      return Response.json({ success: true, action: "duration" })
     }
 
     const visit = await recordVisit({

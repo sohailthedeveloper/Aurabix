@@ -102,12 +102,38 @@ export async function recordVisit({ token, name, template, city, country, device
       name,
       template: template || existing.template || "dental",
       totalVisits: (existing.totalVisits || 0) + 1,
+      totalDuration: existing.totalDuration || 0,
       firstSeen: existing.firstSeen || timestamp,
       lastSeen: timestamp,
     })
   }
 
   return visit
+}
+
+/**
+ * Update the total duration a prospect spent on the page.
+ */
+export async function updateDuration(token, durationSeconds) {
+  if (!durationSeconds || typeof durationSeconds !== "number") return
+
+  const redis = getRedis()
+  if (redis) {
+    const existingMeta = await redis.get(`meta:${token}`)
+    const parsed = typeof existingMeta === "string" ? JSON.parse(existingMeta) : (existingMeta || {})
+    
+    await redis.set(`meta:${token}`, JSON.stringify({
+      ...parsed,
+      totalDuration: (parsed.totalDuration || 0) + durationSeconds,
+    }))
+  } else {
+    const store = getMemoryStore()
+    const existing = store.meta.get(token)
+    if (existing) {
+      existing.totalDuration = (existing.totalDuration || 0) + durationSeconds
+      store.meta.set(token, existing)
+    }
+  }
 }
 
 /**
@@ -181,6 +207,7 @@ export async function getAllProspects() {
         name: meta.name,
         template: meta.template,
         totalVisits: meta.totalVisits,
+        totalDuration: meta.totalDuration || 0,
         firstSeen: meta.firstSeen,
         lastSeen: meta.lastSeen,
         recentVisits: visits,
@@ -208,6 +235,7 @@ export async function getAllProspects() {
         name: meta.name,
         template: meta.template,
         totalVisits: meta.totalVisits,
+        totalDuration: meta.totalDuration || 0,
         firstSeen: meta.firstSeen,
         lastSeen: meta.lastSeen,
         recentVisits: allVisits.slice(0, 10),
@@ -235,5 +263,7 @@ export async function getStats() {
     return lastSeen.toDateString() === today.toDateString()
   }).length
 
-  return { totalProspects, totalVisits, hotLeads, todayVisits }
+  const totalDuration = prospects.reduce((sum, p) => sum + (p.totalDuration || 0), 0)
+
+  return { totalProspects, totalVisits, hotLeads, todayVisits, totalDuration }
 }
